@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Supervisión Operativa de Construcción de Redes M&D</title>
+  <meta name="description" content="Portal centralizado de acceso a formularios de supervisión operativa para M&D Construcción de Redes." />
+  
+  <!-- Favicon SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f2b48'/><path d='M25 70V30l25 24 25-24v40' stroke='%2338bdf8' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/><circle cx='50' cy='32' r='7' fill='%23f59e0b'/></svg>" />
+
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --navy-900: #0a192f;
+      --navy-800: #0f2744;
+      --navy-700: #17365d;
+      --surface: #ffffff;
+      --surface-subtle: #f8fafc;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent-warning: #f59e0b;
+      --accent-success: #10b981;
+      --accent-powerbi: #eab308;
+      --accent-purple: #8b5cf6;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.12), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+      --radius: 16px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --surface: #132238;
+      --surface-subtle: #0c1829;
+      --border: #1e3a5f;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --primary-light: #1e3a5f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--surface-subtle);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 60%, var(--navy-700) 100%);
+      color: white;
+      padding: 1.75rem 1.5rem 2.25rem;
+      border-bottom: 3px solid #38bdf8;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .header-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .logo-badge {
+      width: 68px;
+      height: 68px;
+      background: white;
+      border-radius: 16px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #38bdf8;
+    }
+
+    .logo-badge svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .header-text h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 0.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .header-text h1 {
+        font-size: 1.75rem;
+      }
+    }
+
+    .header-text p {
+      font-size: 0.92rem;
+      color: #93c5fd;
+      font-weight: 400;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f8fafc;
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateY(-2px);
+      color: #ffffff;
+    }
+
+    /* QUICK BAR & SEARCH */
+    .controls-wrap {
+      max-width: 1200px;
+      margin: -1.25rem auto 1.5rem;
+      padding: 0 1.25rem;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .controls-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.85rem 1.25rem;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    @media (min-width: 768px) {
+      .controls-card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.5rem 0.85rem;
+      flex: 1;
+      max-width: 480px;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      width: 100%;
+    }
+
+    .filters-group {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .filter-chip {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .filter-chip.active, .filter-chip:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* MAIN CONTENT */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto 3rem;
+      padding: 0 1.25rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    .section-intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-intro h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .counter-badge {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.6rem;
+      border-radius: 12px;
+    }
+
+    /* CARDS GRID */
+    .grid-forms {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: #93c5fd;
+    }
+
+    .card-stripe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .stripe-amber { background: var(--accent-warning); }
+    .stripe-emerald { background: var(--accent-success); }
+    .stripe-powerbi { background: linear-gradient(90deg, #f59e0b, #eab308); }
+    .stripe-purple { background: var(--accent-purple); }
+
+    .card-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .icon-wrapper {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .icon-amber { background: #fef3c7; color: #b45309; }
+    .icon-emerald { background: #d1fae5; color: #047857; }
+    .icon-powerbi { background: #fef9c3; color: #a16207; }
+    .icon-purple { background: #ede9fe; color: #6d28d9; }
+
+    .card-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      background: var(--surface-subtle);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .card-body {
+      margin-bottom: 1.25rem;
+    }
+
+    .card-number {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.2rem;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-description {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-top: auto;
+      border-top: 1px dashed var(--border);
+      padding-top: 1rem;
+    }
+
+    .btn-open {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-open:hover {
+      background: var(--primary-dark);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+    }
+
+    .btn-powerbi {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    }
+
+    .btn-powerbi:hover {
+      background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+    }
+
+    .card-subactions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-icon-sub {
+      flex: 1;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.45rem 0.5rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: var(--transition);
+    }
+
+    .btn-icon-sub:hover {
+      background: var(--surface);
+      color: var(--text-main);
+      border-color: var(--primary);
+    }
+
+    /* FOOTER */
+    .footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.25rem;
+      margin-top: auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* MODAL FOR EDITING LINKS */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-hover);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .modal-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .modal-field label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-field input {
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+      color: var(--text-main);
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .modal-field input:focus {
+      border-color: var(--primary);
+      background: var(--surface);
+    }
+
+    .modal-footer {
+      padding: 1.25rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--surface-subtle);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border: none;
+      color: white;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--navy-900);
+      color: white;
+      padding: 0.85rem 1.25rem;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 200;
+      border-left: 4px solid var(--accent-success);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* INSTRUCTIONS BANNER */
+    .banner-help {
+      background: linear-gradient(90deg, #eff6ff 0%, #f0fdf4 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.88rem;
+      color: #1e3a8a;
+    }
+
+    [data-theme="dark"] .banner-help {
+      background: #17283c;
+      border-color: #254b77;
+      color: #bfdbfe;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-container">
+      <div class="brand-section">
+        <!-- Brand Logo M&D -->
+        <div class="logo-badge" title="M&D Construcción de Redes">
+          <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background base -->
+            <rect x="5" y="5" width="110" height="110" rx="22" fill="#0A1E34"/>
+            <!-- Tower / Grid / Networks Lines -->
+            <path d="M60 20L32 95H88L60 20Z" stroke="#38BDF8" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M43 65H77" stroke="#38BDF8" stroke-width="4"/>
+            <path d="M37 80H83" stroke="#38BDF8" stroke-width="4"/>
+            <path d="M48 50H72" stroke="#38BDF8" stroke-width="4"/>
+            <!-- Center Signal Point -->
+            <circle cx="60" cy="20" r="7" fill="#F59E0B"/>
+            <path d="M60 8C48 8 38 18 38 30" stroke="#F59E0B" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 4"/>
+            <path d="M60 8C72 8 82 18 82 30" stroke="#F59E0B" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 4"/>
+            <!-- M&D Lettering -->
+            <text x="60" y="112" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="900" font-family="Arial, sans-serif" letter-spacing="1.5">M&amp;D</text>
+          </svg>
+        </div>
+
+        <div class="header-text">
+          <h1>Panel de Supervisión Operativa de Construcción de Redes M&amp;D</h1>
+          <p>Gestión centralizada de formularios de campo, auditorías y control de cuadrillas</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-action" onclick="openLinksModal()" title="Configurar las URLs de los formularios">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          Configurar Enlaces
+        </button>
+
+        <button class="btn-action" onclick="toggleTheme()" id="themeBtn" title="Cambiar tema día/noche">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+          <span id="themeText">Modo Oscuro</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTROLS: SEARCH & CATEGORIES -->
+  <div class="controls-wrap">
+    <div class="controls-card">
+      <div class="search-box">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="Buscar formulario por nombre o palabra clave..." onkeyup="filterCards()" />
+      </div>
+
+      <div class="filters-group">
+        <button class="filter-chip active" onclick="setCategory('all', this)">Todos (7)</button>
+        <button class="filter-chip" onclick="setCategory('flota', this)">Flota y Vehículos</button>
+        <button class="filter-chip" onclick="setCategory('observaciones', this)">Observaciones</button>
+        <button class="filter-chip" onclick="setCategory('analitica', this)">Power BI &amp; Reportes</button>
+        <button class="filter-chip" onclick="setCategory('supervision', this)">Supervisión</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN DASHBOARD CONTENT -->
+  <main class="main-container">
+
+    <!-- Helper banner -->
+    <div class="banner-help">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink: 0; margin-top: 2px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      <div>
+        <strong>Bienvenido al Panel Operativo M&amp;D:</strong> Haz clic en <em>"Abrir Formulario"</em> para acceder directamente a la herramienta. Si necesitas asignar o cambiar las URLs de tus formularios (Google Forms, Microsoft Forms o Power BI), haz clic en <strong>"Configurar Enlaces"</strong> en la parte superior derecha.
+      </div>
+    </div>
+
+    <div class="section-intro">
+      <h2>
+        <span>Módulos de Control y Supervisión</span>
+        <span class="counter-badge" id="visibleCounter">7 disponibles</span>
+      </h2>
+      <button class="btn-action" style="color: var(--text-muted); background: transparent; border-color: var(--border);" onclick="copyAllLinksSummary()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+        Copiar listado de enlaces
+      </button>
+    </div>
+
+    <!-- CARDS GRID -->
+    <div class="grid-forms" id="formsGrid">
+
+      <!-- CARD 1: CONTROL DE VEHÍCULOS -->
+      <article class="form-card" data-category="flota" data-id="vehiculos">
+        <div class="card-stripe"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper">
+              <!-- Truck/Car Icon -->
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10m10 0H3m10 0h3m4 0h1a1 1 0 001-1v-4a1 1 0 00-.293-.707l-3-3A1 1 0 0017.586 7H16v9m0 0h3"/></svg>
+            </div>
+            <span class="card-tag">Operaciones &amp; Flota</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 01</span>
+            <h3 class="card-title">Control De Vehículos</h3>
+            <p class="card-description">
+              Inspección preoperacional diaria de camionetas y móviles de cuadrillas, control de kilometraje, estado de neumáticos, niveles de fluidos y kit de seguridad vial.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" target="_blank" class="btn-open btn-link" data-key="vehiculos">
+            <span>Abrir Formulario</span>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <div class="card-subactions">
+            <button class="btn-icon-sub" onclick="copyCardLink('vehiculos')" title="Copiar enlace al portapapeles">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+              Copiar Enlace
+            </button>
+            <button class="btn-icon-sub" onclick="editSingleLink('vehiculos')" title="Personalizar URL">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Editar URL
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 2: CONTROL DE LICENCIAS -->
+      <article class="form-card" data-category="flota" data-id="licencias">
+        <div class="card-stripe stripe-amber"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-amber">
+              <!-- License Card Icon -->
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
+            </div>
+            <span class="card-tag">Personal &amp; Legal</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 02</span>
+            <h3 class="card-title">Control de Licencias</h3>
+            <p class="card-description">
+              Monitoreo y registro de vencimiento de licencias de conducción (MTC), certificados de trabajo en alturas, inducciones de seguridad y exámenes médicos ocupacionales.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" target="_blank" class="btn-open btn-link" data-key="licencias">
+            <span>Abrir Formulario</span>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <div class="card-subactions">
+            <button class="btn-icon-sub" onclick="copyCardLink('licencias')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+              Copiar Enlace
+            </button>
+            <button class="btn-icon-sub" onclick="editSingleLink('licencias')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Editar URL
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 3: REGISTRO ÚNICO DE OBSERVACIONES -->
+      <article class="form-card" data-category="observaciones" data-id="observaciones">
+        <div class="card-stripe stripe-amber"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-amber">
+              <!-- Observation Alert / Clipboard -->
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <span class="card-tag">Seguridad &amp; Calidad</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 03</span>
+            <h3 class="card-title">Registro Único de Observaciones</h3>
+            <p class="card-description">
+              Reporte en tiempo real de no conformidades técnicas, actos o condiciones inseguras, desviaciones constructivas y hallazgos en tendido y empalme de redes M&amp;D.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" target="_blank" class="btn-open btn-link" data-key="observaciones">
+            <span>Abrir Formulario</span>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <div class="card-subactions">
+            <button class="btn-icon-sub" onclick="copyCardLink('observaciones')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+              Copiar Enlace
+            </button>
+            <button class="btn-icon-sub" onclick="editSingleLink('observaciones')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Editar URL
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 4: REGISTRO ÚNICO DE CIERRE DE OBSERVACIONES -->
+      <article class="form-card" data-category="observaciones" data-id="cierre_observaciones">
+        <div class="card-stripe stripe-emerald"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-emerald">
+              <!-- Checkmark / Resolved icon -->
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <span class="card-tag">Auditoría &amp; Cierre</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 04</span>
+            <h3 class="card-title">Registro Único de Cierre de Observaciones</h3>
+            <p class="card-description">
+              Constancia de subsanación con evidencia fotográfica antes/después, validación del supervisor a cargo y formalización del cierre de la no conformidad.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" target="_blank" class="btn-open btn-link" data-key="cierre_observaciones">
+            <span>Abrir Formulario</span>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <div class="card-subactions">
+            <button class="btn-icon-sub" onclick="copyCardLink('cierre_observaciones')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+              Copiar Enlace
+            </button>
+            <button class="btn-icon-sub" onclick="editSingleLink('cierre_observaciones')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Editar URL
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 5: POWER BI DE GARANTÍAS -->
+      <article class="form-card" data-category="analitica" data-id="powerbi_garantias">
+        <div class="card-stripe stripe-powerbi"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-powerbi">
+              <!-- Power BI / Chart icon -->
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <span class="card-tag" style="background:#fef3c7; color:#92400e;">Tablero BI</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number" style="color: #b45309;">MÓDULO 05</span>
+            <h3 class="card-title">Power BI de Garantías</h3>
+            <p class="card-description">
+              Tablero analítico gerencial para seguimiento de órdenes en garantía, tiempos de respuesta (SLA), reincidencias por tramo de red e indicadores de calidad.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" target="_blank" class="btn-open btn-powerbi btn-link" data-key="powerbi_garantias">
+            <span>Abrir Dashboard Power BI</span>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <div class="card-subactions">
+            <button class="btn-icon-sub" onclick="copyCardLink('powerbi_garantias')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+              Copiar Enlace
+            </button>
+            <button class="btn-icon-sub" onclick="editSingleLink('powerbi_garantias')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Editar URL
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 6: REGISTRO DE VISITAS A CUADRILLAS CRÍTICAS -->
+      <article class="form-card" data-category="supervision" data-id="cuadrillas_criticas">
+        <div class="card-stripe stripe-purple"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-purple">
+              <!-- Users / Team check icon -->
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <span class="card-tag">Supervisión en Campo</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number" style="color: var(--accent-purple);">MÓDULO 06</span>
+            <h3 class="card-title">Registro de Visitas a Cuadrillas Críticas</h3>
+            <p class="card-description">
+              Supervisión focalizada y bitácora de acompañamiento a cuadrillas con historial de desvíos, trabajos en zonas complejas o de alto riesgo operacional.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" target="_blank" class="btn-open btn-link" data-key="cuadrillas_criticas">
+            <span>Abrir Formulario</span>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <div class="card-subactions">
+            <button class="btn-icon-sub" onclick="copyCardLink('cuadrillas_criticas')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+              Copiar Enlace
+            </button>
+            <button class="btn-icon-sub" onclick="editSingleLink('cuadrillas_criticas')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Editar URL
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 7: ORGANIGRAMA SEMANAL DE SUPERVISORES -->
+      <article class="form-card" data-category="supervision" data-id="organigrama_semanal">
+        <div class="card-stripe"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper">
+              <!-- Calendar / Hierarchy icon -->
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="card-tag">Planificación Operativa</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 07</span>
+            <h3 class="card-title">Organigrama Semanal de Supervisores</h3>
+            <p class="card-description">
+              Programación semanal de supervisores por frente de obra, cuadrantes territoriales, turnos rotativos, contactos de emergencia y cuadrillas asignadas.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" target="_blank" class="btn-open btn-link" data-key="organigrama_semanal">
+            <span>Ver Organigrama / Turnos</span>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <div class="card-subactions">
+            <button class="btn-icon-sub" onclick="copyCardLink('organigrama_semanal')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+              Copiar Enlace
+            </button>
+            <button class="btn-icon-sub" onclick="editSingleLink('organigrama_semanal')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Editar URL
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p><strong>Panel de Supervisión Operativa de Construcción de Redes M&amp;D</strong></p>
+      <p style="font-size: 0.8rem; opacity: 0.8;">Diseñado para el control en campo, auditoría de calidad y seguimiento de proyectos de infraestructura de redes.</p>
+      <p style="font-size: 0.75rem; opacity: 0.6;">© <span id="currentYear"></span> M&amp;D Redes. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL PARA GESTIÓN DE ENLACES -->
+  <div class="modal-overlay" id="linksModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Configurar Enlaces de Formularios</h3>
+        <button onclick="closeLinksModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.5rem; line-height:1;">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          Pega los enlaces correspondientes a tus formularios (Google Forms, Microsoft Forms, Power BI o enlaces de SharePoint/OneDrive). Se guardarán en tu navegador para accesos futuros.
+        </p>
+
+        <div class="modal-field">
+          <label for="inp-vehiculos">1. Control De Vehículos</label>
+          <input type="url" id="inp-vehiculos" placeholder="https://forms.office.com/... o https://forms.gle/..." />
+        </div>
+
+        <div class="modal-field">
+          <label for="inp-licencias">2. Control de Licencias</label>
+          <input type="url" id="inp-licencias" placeholder="https://forms.office.com/... o https://forms.gle/..." />
+        </div>
+
+        <div class="modal-field">
+          <label for="inp-observaciones">3. Registro Único de Observaciones</label>
+          <input type="url" id="inp-observaciones" placeholder="https://forms.office.com/... o https://forms.gle/..." />
+        </div>
+
+        <div class="modal-field">
+          <label for="inp-cierre_observaciones">4. Registro Único de Cierre de Observaciones</label>
+          <input type="url" id="inp-cierre_observaciones" placeholder="https://forms.office.com/... o https://forms.gle/..." />
+        </div>
+
+        <div class="modal-field">
+          <label for="inp-powerbi_garantias">5. Power BI de Garantías</label>
+          <input type="url" id="inp-powerbi_garantias" placeholder="https://app.powerbi.com/view?r=..." />
+        </div>
+
+        <div class="modal-field">
+          <label for="inp-cuadrillas_criticas">6. Registro de Visitas a Cuadrillas Críticas</label>
+          <input type="url" id="inp-cuadrillas_criticas" placeholder="https://forms.office.com/... o https://forms.gle/..." />
+        </div>
+
+        <div class="modal-field">
+          <label for="inp-organigrama_semanal">7. Organigrama Semanal de Supervisores</label>
+          <input type="url" id="inp-organigrama_semanal" placeholder="https://onedrive.live.com/... o enlace de Teams / Excel Web" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="resetLinksToDefaults()">Restablecer</button>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn-secondary" onclick="closeLinksModal()">Cancelar</button>
+          <button class="btn-primary" onclick="saveLinks()">Guardar Enlaces</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast">
+    <svg width="20" height="20" fill="none" stroke="#10b981" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+    <span id="toastMessage">Enlace copiado</span>
+  </div>
+
+  <script>
+    // Enlaces predeterminados (placeholders listos para ser personalizados)
+    const defaultLinks = {
+      vehiculos: "https://forms.office.com/pages/responsepage.aspx?id=control_vehiculos",
+      licencias: "https://forms.office.com/pages/responsepage.aspx?id=control_licencias",
+      observaciones: "https://forms.office.com/pages/responsepage.aspx?id=registro_observaciones",
+      cierre_observaciones: "https://forms.office.com/pages/responsepage.aspx?id=cierre_observaciones",
+      powerbi_garantias: "https://app.powerbi.com/view?r=powerbi_garantias_md",
+      cuadrillas_criticas: "https://forms.office.com/pages/responsepage.aspx?id=cuadrillas_criticas",
+      organigrama_semanal: "https://forms.office.com/pages/responsepage.aspx?id=organigrama_semanal"
+    };
+
+    const linkTitles = {
+      vehiculos: "1. Control De Vehículos",
+      licencias: "2. Control de Licencias",
+      observaciones: "3. Registro Único de Observaciones",
+      cierre_observaciones: "4. Registro Único de Cierre de Observaciones",
+      powerbi_garantias: "5. Power BI de Garantías",
+      cuadrillas_criticas: "6. Registro de Visitas a Cuadrillas Críticas",
+      organigrama_semanal: "7. Organigrama Semanal de Supervisores"
+    };
+
+    // Cargar enlaces almacenados en el navegador
+    function getStoredLinks() {
+      const stored = localStorage.getItem('md_panel_links');
+      if (stored) {
+        try {
+          return { ...defaultLinks, ...JSON.parse(stored) };
+        } catch (e) {
+          return defaultLinks;
+        }
+      }
+      return defaultLinks;
+    }
+
+    // Aplicar los enlaces a los botones de la página
+    function applyLinksToDom() {
+      const links = getStoredLinks();
+      document.querySelectorAll('.btn-link').forEach(btn => {
+        const key = btn.getAttribute('data-key');
+        if (key && links[key]) {
+          btn.href = links[key];
+        }
+      });
+    }
+
+    // Modal de edición completa de enlaces
+    function openLinksModal() {
+      const links = getStoredLinks();
+      for (const key in defaultLinks) {
+        const inp = document.getElementById(`inp-${key}`);
+        if (inp) {
+          inp.value = links[key] || '';
+        }
+      }
+      document.getElementById('linksModal').classList.add('active');
+    }
+
+    function closeLinksModal() {
+      document.getElementById('linksModal').classList.remove('active');
+    }
+
+    function saveLinks() {
+      const links = {};
+      for (const key in defaultLinks) {
+        const inp = document.getElementById(`inp-${key}`);
+        if (inp && inp.value.trim() !== '') {
+          links[key] = inp.value.trim();
+        } else {
+          links[key] = defaultLinks[key];
+        }
+      }
+      localStorage.setItem('md_panel_links', JSON.stringify(links));
+      applyLinksToDom();
+      closeLinksModal();
+      showToast('¡Enlaces actualizados correctamente!');
+    }
+
+    function resetLinksToDefaults() {
+      if (confirm('¿Deseas restablecer todos los enlaces a sus valores de muestra predeterminados?')) {
+        localStorage.removeItem('md_panel_links');
+        applyLinksToDom();
+        for (const key in defaultLinks) {
+          const inp = document.getElementById(`inp-${key}`);
+          if (inp) inp.value = defaultLinks[key];
+        }
+        showToast('Enlaces restablecidos por defecto');
+      }
+    }
+
+    // Editar una sola tarjeta
+    function editSingleLink(key) {
+      const links = getStoredLinks();
+      const current = links[key] || '';
+      const title = linkTitles[key] || key;
+      const nuevo = prompt(`Ingresa la URL para: ${title}`, current);
+      if (nuevo !== null && nuevo.trim() !== '') {
+        links[key] = nuevo.trim();
+        localStorage.setItem('md_panel_links', JSON.stringify(links));
+        applyLinksToDom();
+        showToast(`¡Enlace para ${title} actualizado!`);
+      }
+    }
+
+    // Copiar enlace individual
+    function copyCardLink(key) {
+      const links = getStoredLinks();
+      const url = links[key] || '';
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('¡Enlace copiado al portapapeles!');
+      }).catch(() => {
+        // Fallback
+        const dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = url;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        showToast('¡Enlace copiado al portapapeles!');
+      });
+    }
+
+    // Copiar resumen de todos los enlaces
+    function copyAllLinksSummary() {
+      const links = getStoredLinks();
+      let texto = "*Panel de Supervisión Operativa de Redes M&D - Enlaces de Acceso:*\n\n";
+      for (const key in linkTitles) {
+        texto += `📌 ${linkTitles[key]}:\n${links[key] || 'No asignado'}\n\n`;
+      }
+      navigator.clipboard.writeText(texto).then(() => {
+        showToast('¡Lista completa copiada para WhatsApp o correo!');
+      });
+    }
+
+    // Búsqueda y filtrado en vivo
+    function filterCards() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.form-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const title = card.querySelector('.card-title').innerText.toLowerCase();
+        const desc = card.querySelector('.card-description').innerText.toLowerCase();
+        const tag = card.querySelector('.card-tag').innerText.toLowerCase();
+
+        if (title.includes(query) || desc.includes(query) || tag.includes(query)) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('visibleCounter').innerText = `${visibleCount} disponibles`;
+    }
+
+    // Filtro por categorías
+    function setCategory(cat, element) {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      element.classList.add('active');
+
+      const cards = document.querySelectorAll('.form-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const itemCat = card.getAttribute('data-category');
+        if (cat === 'all' || itemCat === cat) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('visibleCounter').innerText = `${visibleCount} disponibles`;
+    }
+
+    // Notificación Toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3200);
+    }
+
+    // Modo Oscuro / Claro
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const target = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', target);
+      localStorage.setItem('md_panel_theme', target);
+      updateThemeUI(target);
+    }
+
+    function updateThemeUI(theme) {
+      const text = document.getElementById('themeText');
+      if (theme === 'dark') {
+        text.innerText = 'Modo Claro';
+      } else {
+        text.innerText = 'Modo Oscuro';
+      }
+    }
+
+    // Inicialización al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      // Año dinámico
+      document.getElementById('currentYear').innerText = new Date().getFullYear();
+
+      // Cargar tema guardado
+      const savedTheme = localStorage.getItem('md_panel_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeUI(savedTheme);
+
+      // Cargar y vincular enlaces
+      applyLinksToDom();
+
+      // Cerrar modal con ESC o clic afuera
+      document.getElementById('linksModal').addEventListener('click', (e) => {
+        if (e.target.id === 'linksModal') closeLinksModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLinksModal();
+      });
+    });
+  </script>
+</body>
+</html>
