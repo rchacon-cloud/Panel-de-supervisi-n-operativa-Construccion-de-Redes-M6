@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Supervisión Operativa de Construcción de Redes M&D</title>
+  <meta name="description" content="Portal oficial centralizado de acceso a formularios, reportes de supervisión y tableros Power BI de M&D Construcción de Redes." />
+  
+  <!-- Favicon SVG con temática de Redes M&D -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a2540'/><circle cx='50' cy='50' r='35' stroke='%2338bdf8' stroke-width='6' fill='none'/><path d='M25 50h50M50 25v50' stroke='%2338bdf8' stroke-width='4'/><circle cx='50' cy='50' r='10' fill='%23f59e0b'/></svg>" />
+
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --navy-950: #071322;
+      --navy-900: #0a1e36;
+      --navy-800: #102e52;
+      --navy-700: #1a4270;
+      --surface: #ffffff;
+      --surface-subtle: #f8fafc;
+      --surface-hover: #f1f5f9;
+      --border: #e2e8f0;
+      --border-focus: #38bdf8;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      
+      /* Colores temáticos por plataforma */
+      --color-forms: #7c3aed;
+      --color-forms-bg: #f5f3ff;
+      --color-sheets: #059669;
+      --color-sheets-bg: #ecfdf5;
+      --color-powerbi: #d97706;
+      --color-powerbi-bg: #fffbeb;
+
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+      --shadow-hover: 0 16px 24px -4px rgb(2 132 199 / 0.16), 0 8px 12px -6px rgb(2 132 199 / 0.1);
+      --radius: 16px;
+      --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --surface: #112238;
+      --surface-subtle: #0a1727;
+      --surface-hover: #162c49;
+      --border: #1e3a5f;
+      --border-focus: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary-light: #163254;
+
+      --color-forms-bg: #281944;
+      --color-sheets-bg: #093325;
+      --color-powerbi-bg: #38240a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--surface-subtle);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 50%, var(--navy-800) 100%);
+      color: white;
+      padding: 1.5rem 1.5rem 2.25rem;
+      border-bottom: 4px solid #38bdf8;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .header-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .header-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .logo-container {
+      min-width: 80px;
+      max-width: 170px;
+      height: 75px;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      flex-shrink: 0;
+      overflow: hidden;
+      border: 2px solid #38bdf8;
+    }
+
+    .logo-container img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .logo-container svg {
+      width: 52px;
+      height: 52px;
+    }
+
+    .header-text h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 0.3rem;
+    }
+
+    @media (min-width: 640px) {
+      .header-text h1 {
+        font-size: 1.7rem;
+      }
+    }
+
+    .header-text p {
+      font-size: 0.92rem;
+      color: #93c5fd;
+      font-weight: 400;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f8fafc;
+      padding: 0.55rem 1rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateY(-2px);
+      color: #ffffff;
+    }
+
+    /* CONTROLS (SEARCH & FILTERS) */
+    .controls-wrap {
+      max-width: 1240px;
+      margin: -1.25rem auto 1.5rem;
+      padding: 0 1.25rem;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .controls-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.85rem 1.25rem;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    @media (min-width: 768px) {
+      .controls-card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.5rem 0.85rem;
+      flex: 1;
+      max-width: 460px;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      width: 100%;
+    }
+
+    .filters-group {
+      display: flex;
+      gap: 0.45rem;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .filter-chip {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .filter-chip.active, .filter-chip:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* MAIN CONTAINER */
+    .main-container {
+      max-width: 1240px;
+      margin: 0 auto 3.5rem;
+      padding: 0 1.25rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    .section-intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .section-intro h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .counter-badge {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 12px;
+    }
+
+    /* GRID OF CARDS (8 MÓDULOS) */
+    .grid-forms {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+      gap: 1.35rem;
+    }
+
+    @media (min-width: 1200px) {
+      .grid-forms {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-focus);
+    }
+
+    .card-top-stripe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .stripe-sheets { background: var(--color-sheets); }
+    .stripe-forms { background: var(--color-forms); }
+    .stripe-powerbi { background: linear-gradient(90deg, #f59e0b, #eab308); }
+
+    .card-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.85rem;
+    }
+
+    .icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .icon-sheets {
+      background: var(--color-sheets-bg);
+      color: var(--color-sheets);
+    }
+
+    .icon-forms {
+      background: var(--color-forms-bg);
+      color: var(--color-forms);
+    }
+
+    .icon-powerbi {
+      background: var(--color-powerbi-bg);
+      color: var(--color-powerbi);
+    }
+
+    .badge-platform {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.6rem;
+      border-radius: 8px;
+    }
+
+    .badge-sheets {
+      background: var(--color-sheets-bg);
+      color: var(--color-sheets);
+      border: 1px solid rgba(5, 150, 105, 0.2);
+    }
+
+    .badge-forms {
+      background: var(--color-forms-bg);
+      color: var(--color-forms);
+      border: 1px solid rgba(124, 58, 237, 0.2);
+    }
+
+    .badge-powerbi {
+      background: var(--color-powerbi-bg);
+      color: #b45309;
+      border: 1px solid rgba(217, 119, 6, 0.2);
+    }
+
+    .card-body {
+      margin-bottom: 1.15rem;
+    }
+
+    .card-number {
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.25rem;
+      display: block;
+      color: var(--text-muted);
+    }
+
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin-bottom: 0.45rem;
+    }
+
+    .card-description {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .card-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-top: auto;
+      border-top: 1px dashed var(--border);
+      padding-top: 0.95rem;
+    }
+
+    /* BOTONES DE APERTURA */
+    .btn-open {
+      text-align: center;
+      padding: 0.7rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      cursor: pointer;
+      color: white;
+    }
+
+    .btn-open-sheets {
+      background: #059669;
+    }
+    .btn-open-sheets:hover {
+      background: #047857;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
+    }
+
+    .btn-open-forms {
+      background: #7c3aed;
+    }
+    .btn-open-forms:hover {
+      background: #6d28d9;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+    }
+
+    .btn-open-powerbi {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    }
+    .btn-open-powerbi:hover {
+      background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+    }
+
+    .btn-copy {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.45rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: var(--transition);
+    }
+
+    .btn-copy:hover {
+      background: var(--surface);
+      color: var(--text-main);
+      border-color: var(--primary);
+    }
+
+    /* FOOTER */
+    .footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.25rem;
+      margin-top: auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-content {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--navy-950);
+      color: white;
+      padding: 0.85rem 1.25rem;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 200;
+      border-left: 4px solid #10b981;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-container">
+      <div class="brand-section">
+        <!-- Logo M&D (Carga logo.png automáticamente) -->
+        <div class="logo-container" title="Redes M&amp;D">
+          <img src="logo.png" alt="Logo Redes M&amp;D" onerror="this.style.display='none'; document.getElementById('fallbackLogoSvg').style.display='block';" />
+          <svg id="fallbackLogoSvg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+            <rect x="5" y="5" width="110" height="110" rx="22" fill="#0A1E34"/>
+            <path d="M60 20L32 95H88L60 20Z" stroke="#38BDF8" stroke-width="4"/>
+            <circle cx="60" cy="20" r="7" fill="#F59E0B"/>
+            <text x="60" y="112" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="900" font-family="Arial, sans-serif">M&amp;D</text>
+          </svg>
+        </div>
+
+        <div class="header-text">
+          <h1>Panel de Supervisión Operativa de Construcción de Redes M&amp;D</h1>
+          <p>Portal centralizado de acceso oficial a herramientas de campo y seguimiento</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-action" onclick="toggleTheme()" id="themeBtn" title="Cambiar tema">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+          <span id="themeText">Modo Oscuro</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTROLS: SEARCH & CATEGORIES -->
+  <div class="controls-wrap">
+    <div class="controls-card">
+      <div class="search-box">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="Buscar módulo o formulario..." onkeyup="filterCards()" />
+      </div>
+
+      <div class="filters-group">
+        <button class="filter-chip active" onclick="setFilter('all', this)">Todos (8)</button>
+        <button class="filter-chip" onclick="setFilter('forms', this)">Formularios (3)</button>
+        <button class="filter-chip" onclick="setFilter('sheets', this)">Hojas de Cálculo (3)</button>
+        <button class="filter-chip" onclick="setFilter('powerbi', this)">Power BI (2)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN DASHBOARD CONTENT -->
+  <main class="main-container">
+
+    <div class="section-intro">
+      <h2>
+        <span>Módulos Operativos Oficiales</span>
+        <span class="counter-badge" id="visibleCounter">8 disponibles</span>
+      </h2>
+      <button class="btn-action" style="color: var(--text-muted); background: transparent; border-color: var(--border);" onclick="copyAllLinksSummary()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+        Copiar lista para WhatsApp
+      </button>
+    </div>
+
+    <!-- CARDS GRID (8 MÓDULOS) -->
+    <div class="grid-forms" id="formsGrid">
+
+      <!-- 1. CONTROL DE VEHÍCULOS -->
+      <article class="form-card" data-type="sheets" data-title="control de vehiculos">
+        <div class="card-top-stripe stripe-sheets"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-sheets">
+              <!-- Car/Truck Icon -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10m10 0H3m10 0h3m4 0h1a1 1 0 001-1v-4a1 1 0 00-.293-.707l-3-3A1 1 0 0017.586 7H16v9m0 0h3"/></svg>
+            </div>
+            <span class="badge-platform badge-sheets">Google Sheets</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 01</span>
+            <h3 class="card-title">Control De Vehículos</h3>
+            <p class="card-description">
+              Matriz en línea de inspección de flota, kilometraje, control de combustible, mantenimiento preventivo y asignación de camionetas.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://docs.google.com/spreadsheets/d/16DXaYOtafd7o3phBfwRnivvb2o2C0AfY2ezyEDd-5w4/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-sheets">
+            <span>Abrir Hoja de Cálculo</span>
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <button class="btn-copy" onclick="copyDirectLink('https://docs.google.com/spreadsheets/d/16DXaYOtafd7o3phBfwRnivvb2o2C0AfY2ezyEDd-5w4/edit?usp=sharing')">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+            Copiar Enlace
+          </button>
+        </div>
+      </article>
+
+      <!-- 2. CONTROL DE CONDUCTORES -->
+      <article class="form-card" data-type="sheets" data-title="control de conductores licencias">
+        <div class="card-top-stripe stripe-sheets"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-sheets">
+              <!-- Driver license / user badge -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
+            </div>
+            <span class="badge-platform badge-sheets">Google Sheets</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 02</span>
+            <h3 class="card-title">Control de Conductores</h3>
+            <p class="card-description">
+              Monitoreo y vigencias de licencias de conducir (MTC), exámenes médicos ocupacionales, inducciones y habilitaciones vigentes.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://docs.google.com/spreadsheets/d/12S7SMuUaEetUrIJMaV6horx7fbGlDPPAEog-e1gqrTg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-sheets">
+            <span>Abrir Hoja de Cálculo</span>
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <button class="btn-copy" onclick="copyDirectLink('https://docs.google.com/spreadsheets/d/12S7SMuUaEetUrIJMaV6horx7fbGlDPPAEog-e1gqrTg/edit?usp=sharing')">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+            Copiar Enlace
+          </button>
+        </div>
+      </article>
+
+      <!-- 3. FORMATO ÚNICO DE REGISTRO DE OBSERVACIONES -->
+      <article class="form-card" data-type="forms" data-title="registro unico de observaciones formato supervision">
+        <div class="card-top-stripe stripe-forms"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-forms">
+              <!-- Alert / Inspection icon -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <span class="badge-platform badge-forms">Google Forms</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 03</span>
+            <h3 class="card-title">Registro Único de Observaciones</h3>
+            <p class="card-description">
+              Formulario de reporte inmediato de no conformidades técnicas, actos o condiciones subestándar y desvíos constructivos en redes.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://forms.gle/fKfKr6SGDna8Y523A" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-forms">
+            <span>Abrir Formulario</span>
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <button class="btn-copy" onclick="copyDirectLink('https://forms.gle/fKfKr6SGDna8Y523A')">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+            Copiar Enlace
+          </button>
+        </div>
+      </article>
+
+      <!-- 4. CIERRE DE OBSERVACIONES DE SUPERVISIÓN -->
+      <article class="form-card" data-type="forms" data-title="cierre de observaciones supervision">
+        <div class="card-top-stripe stripe-forms"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-forms">
+              <!-- Checkmark / Resolved icon -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <span class="badge-platform badge-forms">Google Forms</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 04</span>
+            <h3 class="card-title">Cierre de Observaciones</h3>
+            <p class="card-description">
+              Formulario de evidencia fotográfica de subsanación, validación del levantamiento de observaciones y cierre definitivo.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://forms.gle/4CVbTQyeXPihyUVc6" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-forms">
+            <span>Abrir Formulario de Cierre</span>
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <button class="btn-copy" onclick="copyDirectLink('https://forms.gle/4CVbTQyeXPihyUVc6')">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+            Copiar Enlace
+          </button>
+        </div>
+      </article>
+
+      <!-- 5. POWER BI DE GARANTÍAS -->
+      <article class="form-card" data-type="powerbi" data-title="power bi de garantias reclamos">
+        <div class="card-top-stripe stripe-powerbi"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-powerbi">
+              <!-- Bar chart / Analytics -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <span class="badge-platform badge-powerbi">Power BI</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 05</span>
+            <h3 class="card-title">Power BI de Garantías</h3>
+            <p class="card-description">
+              Tablero interactivo de seguimiento de garantías de obras de redes, tiempos de atención (SLA), reincidencias y trazabilidad.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://app.powerbi.com/view?r=eyJrIjoiMzRjNGUzMzEtNGEzOC00M2M3LWFmNzItOTg4NDIzNTVhODNiIiwidCI6ImY2YTA3ODJkLWYxOWQtNGQ1OC1hZjYyLTUyMDIyNDZmZjQxYyIsImMiOjR9" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-powerbi">
+            <span>Abrir Dashboard Power BI</span>
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <button class="btn-copy" onclick="copyDirectLink('https://app.powerbi.com/view?r=eyJrIjoiMzRjNGUzMzEtNGEzOC00M2M3LWFmNzItOTg4NDIzNTVhODNiIiwidCI6ImY2YTA3ODJkLWYxOWQtNGQ1OC1hZjYyLTUyMDIyNDZmZjQxYyIsImMiOjR9')">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+            Copiar Enlace
+          </button>
+        </div>
+      </article>
+
+      <!-- 6. CERTIFICACIÓN -->
+      <article class="form-card" data-type="powerbi" data-title="certificacion avance obras redes">
+        <div class="card-top-stripe stripe-powerbi"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-powerbi">
+              <!-- Certificate / Badge icon -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            </div>
+            <span class="badge-platform badge-powerbi">Power BI</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 06</span>
+            <h3 class="card-title">Certificación</h3>
+            <p class="card-description">
+              Tablero gerencial de indicadores y estados de certificación de proyectos, tramos de red ejecutados y entregas conforme a norma.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://app.powerbi.com/view?r=eyJrIjoiMDEzNGI2OTgtNTFjZS00MWIwLTg5MjgtM2ExMmQyNjVmMGQwIiwidCI6ImZhY2I1NjA3LTBhNDMtNDQwOS1hY2MxLWIxZTI2OWZhZjdhOCIsImMiOjR9&pageName=5e6d8e39e3e25d735e1d" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-powerbi">
+            <span>Abrir Dashboard Certificación</span>
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <button class="btn-copy" onclick="copyDirectLink('https://app.powerbi.com/view?r=eyJrIjoiMDEzNGI2OTgtNTFjZS00MWIwLTg5MjgtM2ExMmQyNjVmMGQwIiwidCI6ImZhY2I1NjA3LTBhNDMtNDQwOS1hY2MxLWIxZTI2OWZhZjdhOCIsImMiOjR9&pageName=5e6d8e39e3e25d735e1d')">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+            Copiar Enlace
+          </button>
+        </div>
+      </article>
+
+      <!-- 7. REGISTRO DE VISITAS A CUADRILLAS CRÍTICAS -->
+      <article class="form-card" data-type="forms" data-title="registro de visitas a cuadrillas criticas campo">
+        <div class="card-top-stripe stripe-forms"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-forms">
+              <!-- Users / Team check icon -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <span class="badge-platform badge-forms">Google Forms</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 07</span>
+            <h3 class="card-title">Registro de Visitas a Cuadrillas Críticas</h3>
+            <p class="card-description">
+              Formulario de auditoría en terreno y acompañamiento técnico a cuadrillas con historial de no conformidades o trabajos de alto riesgo.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://forms.gle/Bg3JCQ3G9xm6ZQBD6" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-forms">
+            <span>Abrir Formulario de Visita</span>
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <button class="btn-copy" onclick="copyDirectLink('https://forms.gle/Bg3JCQ3G9xm6ZQBD6')">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+            Copiar Enlace
+          </button>
+        </div>
+      </article>
+
+      <!-- 8. ROTACIÓN SEMANAL (ORGANIGRAMA SEMANAL DE SUPERVISORES) -->
+      <article class="form-card" data-type="sheets" data-title="rotacion semanal organigrama de supervisores turnos">
+        <div class="card-top-stripe stripe-sheets"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-sheets">
+              <!-- Calendar / Schedule icon -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="badge-platform badge-sheets">Google Sheets</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">MÓDULO 08</span>
+            <h3 class="card-title">Rotación Semanal de Supervisores</h3>
+            <p class="card-description">
+              Planificación y programación semanal de turnos, frentes de trabajo, zonas geográficas de cobertura y contactos de supervisión de obra.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://docs.google.com/spreadsheets/d/1FTuGbgxTv_osgVCmhekxlnwIPNCREIjzicL9-ewjQyc/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-sheets">
+            <span>Ver Rotación Semanal</span>
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <button class="btn-copy" onclick="copyDirectLink('https://docs.google.com/spreadsheets/d/1FTuGbgxTv_osgVCmhekxlnwIPNCREIjzicL9-ewjQyc/edit?usp=sharing')">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+            Copiar Enlace
+          </button>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p><strong>Panel de Supervisión Operativa de Construcción de Redes M&amp;D</strong></p>
+      <p style="font-size: 0.8rem; opacity: 0.8;">Enlaces oficiales protegidos. Modificaciones y actualizaciones gestionadas exclusivamente a nivel de código fuente.</p>
+      <p style="font-size: 0.75rem; opacity: 0.6;">© <span id="currentYear"></span> Redes M&amp;D. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast">
+    <svg width="20" height="20" fill="none" stroke="#10b981" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+    <span id="toastMessage">Enlace copiado</span>
+  </div>
+
+  <script>
+    // Lista fija e inmutable de enlaces
+    const officialLinks = [
+      { name: "1. Control De Vehículos", url: "https://docs.google.com/spreadsheets/d/16DXaYOtafd7o3phBfwRnivvb2o2C0AfY2ezyEDd-5w4/edit?usp=sharing" },
+      { name: "2. Control de Conductores", url: "https://docs.google.com/spreadsheets/d/12S7SMuUaEetUrIJMaV6horx7fbGlDPPAEog-e1gqrTg/edit?usp=sharing" },
+      { name: "3. Registro Único de Observaciones", url: "https://forms.gle/fKfKr6SGDna8Y523A" },
+      { name: "4. Cierre de Observaciones de Supervisión", url: "https://forms.gle/4CVbTQyeXPihyUVc6" },
+      { name: "5. Power BI de Garantías", url: "https://app.powerbi.com/view?r=eyJrIjoiMzRjNGUzMzEtNGEzOC00M2M3LWFmNzItOTg4NDIzNTVhODNiIiwidCI6ImY2YTA3ODJkLWYxOWQtNGQ1OC1hZjYyLTUyMDIyNDZmZjQxYyIsImMiOjR9" },
+      { name: "6. Certificación", url: "https://app.powerbi.com/view?r=eyJrIjoiMDEzNGI2OTgtNTFjZS00MWIwLTg5MjgtM2ExMmQyNjVmMGQwIiwidCI6ImZhY2I1NjA3LTBhNDMtNDQwOS1hY2MxLWIxZTI2OWZhZjdhOCIsImMiOjR9&pageName=5e6d8e39e3e25d735e1d" },
+      { name: "7. Registro de Visitas a Cuadrillas Críticas", url: "https://forms.gle/Bg3JCQ3G9xm6ZQBD6" },
+      { name: "8. Rotación Semanal de Supervisores", url: "https://docs.google.com/spreadsheets/d/1FTuGbgxTv_osgVCmhekxlnwIPNCREIjzicL9-ewjQyc/edit?usp=sharing" }
+    ];
+
+    // Copiar enlace individual
+    function copyDirectLink(url) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(() => {
+          showToast('¡Enlace copiado al portapapeles!');
+        }).catch(() => fallbackCopy(url));
+      } else {
+        fallbackCopy(url);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = text;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      showToast('¡Enlace copiado al portapapeles!');
+    }
+
+    // Copiar todos los enlaces para compartir por WhatsApp
+    function copyAllLinksSummary() {
+      let texto = "*Panel de Supervisión Operativa de Construcción de Redes M&D*\n_Enlaces oficiales de acceso:_\n\n";
+      officialLinks.forEach(item => {
+        texto += `📌 *${item.name}*\n${item.url}\n\n`;
+      });
+
+      fallbackCopy(texto);
+      showToast('¡Listado completo copiado para WhatsApp!');
+    }
+
+    // Búsqueda y filtrado interactivo
+    function filterCards() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const activeFilterChip = document.querySelector('.filter-chip.active');
+      const activeType = activeFilterChip ? activeFilterChip.getAttribute('data-filter') : 'all';
+
+      const cards = document.querySelectorAll('.form-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const title = card.getAttribute('data-title') || '';
+        const cardType = card.getAttribute('data-type');
+        const matchesQuery = query === '' || title.includes(query) || card.innerText.toLowerCase().includes(query);
+        const matchesType = activeType === 'all' || cardType === activeType;
+
+        if (matchesQuery && matchesType) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('visibleCounter').innerText = `${visibleCount} disponibles`;
+    }
+
+    // Filtros por plataforma
+    function setFilter(type, chipElement) {
+      document.querySelectorAll('.filter-chip').forEach(c => {
+        c.classList.remove('active');
+        c.removeAttribute('data-filter');
+      });
+      chipElement.classList.add('active');
+      chipElement.setAttribute('data-filter', type);
+
+      const cards = document.querySelectorAll('.form-card');
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const cardType = card.getAttribute('data-type');
+        const title = card.getAttribute('data-title') || '';
+        const matchesType = type === 'all' || cardType === type;
+        const matchesQuery = query === '' || title.includes(query) || card.innerText.toLowerCase().includes(query);
+
+        if (matchesType && matchesQuery) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('visibleCounter').innerText = `${visibleCount} disponibles`;
+    }
+
+    // Notificación Toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Modo Oscuro / Claro
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const target = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', target);
+      localStorage.setItem('md_panel_theme', target);
+      updateThemeUI(target);
+    }
+
+    function updateThemeUI(theme) {
+      const text = document.getElementById('themeText');
+      if (theme === 'dark') {
+        text.innerText = 'Modo Claro';
+      } else {
+        text.innerText = 'Modo Oscuro';
+      }
+    }
+
+    // Inicialización al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('currentYear').innerText = new Date().getFullYear();
+
+      // Cargar tema guardado
+      const savedTheme = localStorage.getItem('md_panel_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeUI(savedTheme);
+    });
+  </script>
+</body>
+</html>
