@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Consulta de Vehículos - Redes M&D</title>
-  <meta name="description" content="Interfaz de consulta operativa de vehículos por placa y cuadrilla para M&D Construcción de Redes." />
+  <title>Conductores Autorizados - Redes M&D</title>
+  <meta name="description" content="Consulta en tiempo real de conductores autorizados, licencias de conducir MTC y habilitaciones para M&D Construcción de Redes." />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a2540'/><circle cx='50' cy='50' r='35' stroke='%2338bdf8' stroke-width='6' fill='none'/><path d='M25 50h50M50 25v50' stroke='%2338bdf8' stroke-width='4'/><circle cx='50' cy='50' r='10' fill='%23f59e0b'/></svg>" />
@@ -76,7 +76,7 @@
     }
 
     .header-container {
-      max-width: 1200px;
+      max-width: 1240px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -163,7 +163,7 @@
 
     /* MAIN CONTAINER */
     .main-container {
-      max-width: 1200px;
+      max-width: 1240px;
       margin: 1.5rem auto 3.5rem;
       padding: 0 1.25rem;
       width: 100%;
@@ -189,7 +189,7 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, #0284c7, #059669);
+      background: linear-gradient(90deg, #059669, #0284c7);
     }
 
     .search-modes-group {
@@ -215,10 +215,10 @@
     }
 
     .mode-tab.active {
-      background: var(--primary);
-      border-color: var(--primary);
+      background: #059669;
+      border-color: #059669;
       color: #ffffff;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.28);
     }
 
     .search-inputs-area {
@@ -262,9 +262,9 @@
     }
 
     .main-input:focus {
-      border-color: var(--primary);
+      border-color: #059669;
       background: var(--surface);
-      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+      box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.15);
     }
 
     .select-dropdown {
@@ -282,7 +282,7 @@
     }
 
     .select-dropdown:focus {
-      border-color: var(--primary);
+      border-color: #059669;
       background: var(--surface);
     }
 
@@ -305,33 +305,6 @@
       background: var(--surface-hover);
       color: var(--text-main);
       border-color: var(--text-muted);
-    }
-
-    /* QUICK PILLS (AUTOCOMPLETE LIST) */
-    .quick-pills-wrap {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      margin-top: 0.85rem;
-      flex-wrap: wrap;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-
-    .quick-pill {
-      background: var(--surface-subtle);
-      border: 1px solid var(--border);
-      color: var(--primary);
-      padding: 0.2rem 0.6rem;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .quick-pill:hover {
-      background: var(--primary-light);
-      border-color: var(--primary);
     }
 
     /* STATS STRIP */
@@ -398,8 +371,8 @@
     }
 
     .badge-counter {
-      background: var(--primary-light);
-      color: var(--primary-dark);
+      background: var(--color-sheets-bg);
+      color: var(--color-sheets);
       font-size: 0.8rem;
       font-weight: 800;
       padding: 0.2rem 0.65rem;
@@ -431,18 +404,18 @@
     }
 
     .btn-toggle-view.active {
-      background: var(--primary);
+      background: #059669;
       color: white;
     }
 
-    /* GRID OF VEHICLE CARDS */
-    .vehicles-grid {
+    /* CARDS GRID */
+    .drivers-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 1.35rem;
     }
 
-    .vehicle-card {
+    .driver-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -454,13 +427,13 @@
       position: relative;
     }
 
-    .vehicle-card:hover {
+    .driver-card:hover {
       transform: translateY(-4px);
       box-shadow: var(--shadow-hover);
-      border-color: var(--border-focus);
+      border-color: #059669;
     }
 
-    .vehicle-card-header {
+    .driver-card-header {
       background: var(--surface-subtle);
       border-bottom: 1px solid var(--border);
       padding: 1.15rem 1.25rem;
@@ -469,26 +442,20 @@
       align-items: center;
     }
 
-    .plate-badge {
+    .dni-badge {
       background: #0f172a;
-      color: #fbbf24;
+      color: #38bdf8;
       font-family: "Courier New", Courier, monospace;
       font-weight: 900;
-      font-size: 1.3rem;
-      letter-spacing: 0.08em;
-      padding: 0.35rem 0.85rem;
+      font-size: 1.15rem;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.75rem;
       border-radius: 8px;
-      border: 2px solid #334155;
-      display: inline-flex;
-      align-items: center;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+      border: 2px solid #1e3a5f;
     }
 
-    .cuadrilla-badge {
-      background: var(--color-sheets-bg);
-      color: var(--color-sheets);
-      border: 1px solid rgba(5, 150, 105, 0.3);
-      font-size: 0.78rem;
+    .status-badge {
+      font-size: 0.75rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -496,12 +463,38 @@
       border-radius: 20px;
     }
 
-    .vehicle-card-body {
+    .status-badge.active {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid rgba(21, 128, 61, 0.3);
+    }
+
+    .status-badge.warning {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid rgba(180, 83, 9, 0.3);
+    }
+
+    .status-badge.danger {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid rgba(185, 28, 28, 0.3);
+    }
+
+    .driver-card-body {
       padding: 1.25rem;
       display: flex;
       flex-direction: column;
-      gap: 0.85rem;
+      gap: 0.8rem;
       flex: 1;
+    }
+
+    .driver-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.3;
+      margin-bottom: 0.35rem;
     }
 
     .info-row {
@@ -532,37 +525,32 @@
       text-align: right;
     }
 
-    .vehicle-card-footer {
+    .driver-card-footer {
       background: var(--surface-subtle);
       border-top: 1px solid var(--border);
       padding: 0.85rem 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      gap: 0.5rem;
     }
 
-    .btn-card-action {
-      flex: 1;
-      padding: 0.5rem;
+    .btn-view-detail {
+      width: 100%;
+      background: #059669;
+      color: white;
+      border: none;
+      padding: 0.6rem;
       border-radius: 8px;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 700;
       cursor: pointer;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem;
+      gap: 0.45rem;
       transition: var(--transition);
-      text-decoration: none;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-main);
     }
 
-    .btn-card-action:hover {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
+    .btn-view-detail:hover {
+      background: #047857;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
     }
 
     /* TABLE VIEW */
@@ -606,7 +594,7 @@
       background: var(--surface-hover);
     }
 
-    /* EMPTY & ALERT STATES */
+    /* ALERT BANNER */
     .alert-banner {
       background: #eff6ff;
       border: 1px solid #bfdbfe;
@@ -638,6 +626,7 @@
       color: #fef3c7;
     }
 
+    /* EMPTY STATE */
     .empty-state {
       background: var(--surface);
       border: 2px dashed var(--border);
@@ -654,37 +643,7 @@
       opacity: 0.5;
     }
 
-    .empty-state h3 {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--text-main);
-      margin-bottom: 0.4rem;
-    }
-
-    /* LOADING SPINNER */
-    .spinner-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem;
-      gap: 1rem;
-    }
-
-    .spinner {
-      width: 44px;
-      height: 44px;
-      border: 4px solid var(--border);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* MODAL DE DETALLE COMPLETO */
+    /* MODAL */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -706,7 +665,7 @@
       border-radius: var(--radius);
       border: 1px solid var(--border);
       width: 100%;
-      max-width: 600px;
+      max-width: 620px;
       max-height: 85vh;
       overflow-y: auto;
       box-shadow: var(--shadow-lg);
@@ -729,28 +688,27 @@
       gap: 1rem;
     }
 
-    /* TOAST */
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: var(--navy-950);
-      color: white;
-      padding: 0.85rem 1.25rem;
-      border-radius: 12px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      box-shadow: var(--shadow-lg);
-      transform: translateY(100px);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 2000;
-      border-left: 4px solid #10b981;
+    /* SPINNER */
+    .spinner-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      gap: 1rem;
     }
 
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid var(--border);
+      border-top-color: #059669;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -770,8 +728,8 @@
         </div>
 
         <div class="header-title">
-          <h1>Consulta Operativa de Flota y Vehículos</h1>
-          <p>M&amp;D Construcción de Redes • Extracción de datos en tiempo real</p>
+          <h1>Conductores Autorizados - Redes M&amp;D</h1>
+          <p>Verificación de licencias de conducir MTC, vigencias y cuadrillas asignadas</p>
         </div>
       </div>
 
@@ -794,20 +752,20 @@
   <!-- MAIN -->
   <main class="main-container">
 
-    <!-- ALERT BANNER: STATUS / SHEET SOURCE -->
+    <!-- ALERT BANNER -->
     <div id="statusAlert" class="alert-banner" style="display:none;">
       <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
       <div id="statusAlertText" style="flex:1;">
-        Conectando a Google Sheets...
+        Conectando a la base de conductores...
       </div>
     </div>
 
     <!-- SEARCH HERO CARD -->
     <section class="search-card">
       <div class="search-modes-group">
-        <button class="mode-tab active" id="tabPlaca" onclick="switchSearchMode('placa')">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"></rect><circle cx="8" cy="12" r="2"></circle><circle cx="16" cy="12" r="2"></circle></svg>
-          Buscar por Placa
+        <button class="mode-tab active" id="tabDni" onclick="switchSearchMode('dni')">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
+          Buscar por DNI / Nombre
         </button>
         <button class="mode-tab" id="tabCuadrilla" onclick="switchSearchMode('cuadrilla')">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -819,11 +777,11 @@
         </button>
       </div>
 
-      <!-- INPUT AREA FOR PLACA -->
-      <div class="search-inputs-area" id="searchAreaPlaca">
+      <!-- INPUT AREA FOR DNI / NAME -->
+      <div class="search-inputs-area" id="searchAreaDni">
         <div class="input-wrapper">
           <svg class="input-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="text" id="inputPlaca" class="main-input" placeholder="Escribe la placa (ej: ABC-123 o cualquier letra/número)..." oninput="executeSearch()" autocomplete="off" />
+          <input type="text" id="inputDni" class="main-input" placeholder="Escribe DNI, Brevete o Nombres del conductor..." oninput="executeSearch()" autocomplete="off" />
         </div>
         <button class="btn-clear" onclick="clearSearch()">Limpiar</button>
       </div>
@@ -833,7 +791,7 @@
         <div class="input-wrapper">
           <svg class="input-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           <select id="selectCuadrilla" class="select-dropdown" onchange="executeSearch()">
-            <option value="">-- Selecciona o filtra una cuadrilla --</option>
+            <option value="">-- Todas las Cuadrillas --</option>
           </select>
         </div>
         <div class="input-wrapper" style="flex: 0.8;">
@@ -841,35 +799,29 @@
         </div>
         <button class="btn-clear" onclick="clearSearch()">Limpiar</button>
       </div>
-
-      <!-- QUICK SUGGESTIONS -->
-      <div class="quick-pills-wrap" id="quickPillsSection">
-        <span>Sugerencias rápidas:</span>
-        <div id="quickPillsList" style="display:inline-flex; gap:0.4rem; flex-wrap:wrap;"></div>
-      </div>
     </section>
 
     <!-- STATS STRIP -->
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-icon" style="background:#e0f2fe; color:#0284c7;">🚗</div>
+        <div class="stat-icon" style="background:#ecfdf5; color:#059669;">🪪</div>
         <div>
-          <div class="stat-value" id="statTotalVehiculos">0</div>
-          <div class="stat-label">Total Vehículos</div>
+          <div class="stat-value" id="statTotalConductores">0</div>
+          <div class="stat-label">Conductores Registrados</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:#d1fae5; color:#059669;">👥</div>
+        <div class="stat-icon" style="background:#dcfce7; color:#15803d;">✅</div>
         <div>
-          <div class="stat-value" id="statTotalCuadrillas">0</div>
-          <div class="stat-label">Cuadrillas Registradas</div>
+          <div class="stat-value" id="statHabilitados">0</div>
+          <div class="stat-label">Habilitados / Vigentes</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:#fef3c7; color:#d97706;">🔍</div>
+        <div class="stat-icon" style="background:#e0f2fe; color:#0284c7;">🔍</div>
         <div>
           <div class="stat-value" id="statFiltrados">0</div>
-          <div class="stat-label">Coincidencias Actuales</div>
+          <div class="stat-label">Coincidencias</div>
         </div>
       </div>
       <div class="stat-card">
@@ -885,7 +837,7 @@
     <section>
       <div class="results-header">
         <div class="results-title">
-          <span>Vehículos Encontrados</span>
+          <span>Conductores Encontrados</span>
           <span class="badge-counter" id="badgeResultCount">0</span>
         </div>
 
@@ -901,93 +853,78 @@
         </div>
       </div>
 
-      <!-- LOADING SPINNER -->
+      <!-- LOADING -->
       <div id="loadingIndicator" class="spinner-wrap">
         <div class="spinner"></div>
         <p style="color:var(--text-muted); font-size:0.92rem; font-weight:600;">Consultando datos desde Google Sheets...</p>
       </div>
 
-      <!-- CARDS VIEW CONTAINER -->
-      <div class="vehicles-grid" id="vehiclesGrid" style="display:none;"></div>
+      <!-- CARDS VIEW -->
+      <div class="drivers-grid" id="driversGrid" style="display:none;"></div>
 
-      <!-- TABLE VIEW CONTAINER -->
-      <div class="table-responsive" id="vehiclesTableWrap">
-        <table class="data-table" id="vehiclesTable">
-          <thead id="vehiclesTableHead"></thead>
-          <tbody id="vehiclesTableBody"></tbody>
+      <!-- TABLE VIEW -->
+      <div class="table-responsive" id="driversTableWrap">
+        <table class="data-table" id="driversTable">
+          <thead id="driversTableHead"></thead>
+          <tbody id="driversTableBody"></tbody>
         </table>
       </div>
 
       <!-- EMPTY STATE -->
       <div class="empty-state" id="emptyState" style="display:none;">
         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-        <h3 id="emptyTitle">No se encontraron resultados</h3>
-        <p id="emptyDesc">Intenta modificando el criterio de búsqueda o seleccionando "Ver Todos".</p>
+        <h3>No se encontraron conductores</h3>
+        <p>Verifica el DNI o el nombre ingresado.</p>
       </div>
     </section>
 
   </main>
 
-  <!-- MODAL DE DETALLE COMPLETO -->
+  <!-- MODAL DE DETALLE -->
   <div class="modal-overlay" id="detailModal">
     <div class="modal-box">
       <div class="modal-box-header">
-        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main);" id="modalVehicleTitle">Ficha del Vehículo</h3>
+        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main);" id="modalDriverTitle">Ficha del Conductor</h3>
         <button onclick="closeDetailModal()" style="background:none; border:none; color:var(--text-muted); font-size:1.6rem; cursor:pointer; line-height:1;">&times;</button>
       </div>
-      <div class="modal-box-body" id="modalVehicleContent"></div>
-      <div style="padding:1rem 1.5rem; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:0.5rem; background:var(--surface-subtle);">
+      <div class="modal-box-body" id="modalDriverContent"></div>
+      <div style="padding:1rem 1.5rem; border-top:1px solid var(--border); display:flex; justify-content:flex-end; background:var(--surface-subtle);">
         <button class="btn-clear" onclick="closeDetailModal()">Cerrar</button>
       </div>
     </div>
   </div>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast">Enlace copiado</div>
-
   <script>
-    // ID del Google Spreadsheet de Vehículos
-    const SPREADSHEET_ID = '16DXaYOtafd7o3phBfwRnivvb2o2C0AfY2ezyEDd-5w4';
+    const SPREADSHEET_ID = '12S7SMuUaEetUrIJMaV6horx7fbGlDPPAEog-e1gqrTg';
     const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
 
-    let allVehiclesData = [];
+    let allDriversData = [];
     let allHeaders = [];
-    let detectedCols = {
-      placaIndex: -1,
-      cuadrillaIndex: -1,
-      conductorIndex: -1,
-      modeloIndex: -1,
-      estadoIndex: -1,
-      kmIndex: -1,
-      soatIndex: -1
-    };
-    let currentMode = 'placa'; // 'placa', 'cuadrilla', 'todos'
-    let currentView = 'cards'; // 'cards', 'table'
+    let detectedCols = { dniIndex: -1, nombreIndex: -1, cuadrillaIndex: -1, licenciaIndex: -1, categoriaIndex: -1, vencimientoIndex: -1, estadoIndex: -1, vehiculoIndex: -1 };
+    let currentMode = 'dni';
+    let currentView = 'cards';
 
-    // Datos de respaldo / ejemplo para funcionamiento sin conexión si el sheet tiene restricciones privadas
-    const fallbackVehicles = [
-      { "PLACA": "BZF-812", "CUADRILLA": "CUADRILLA 01 - FIBRA", "CONDUCTOR": "Carlos Mendoza Ruiz", "VEHICULO": "Toyota Hilux 4x4", "ESTADO": "OPERATIVO", "KILOMETRAJE": "48,500 km", "SOAT": "Vigente 2027", "SUPERVISOR": "Ing. Roberto Chacón" },
-      { "PLACA": "C4T-790", "CUADRILLA": "CUADRILLA 02 - TENDIDO", "CONDUCTOR": "Jorge Quispe Flores", "VEHICULO": "Nissan Frontier", "ESTADO": "OPERATIVO", "KILOMETRAJE": "62,100 km", "SOAT": "Vigente 2027", "SUPERVISOR": "Ing. Roberto Chacón" },
-      { "PLACA": "A9D-903", "CUADRILLA": "CUADRILLA 03 - EMPALME", "CONDUCTOR": "Luis Ramos Salazar", "VEHICULO": "Mitsubishi L200", "ESTADO": "OPERATIVO", "KILOMETRAJE": "35,200 km", "SOAT": "Vigente 2027", "SUPERVISOR": "Ing. Javier Morales" },
-      { "PLACA": "F1K-645", "CUADRILLA": "CUADRILLA 04 - OBRAS CIVILES", "CONDUCTOR": "Manuel Torres Castro", "VEHICULO": "Hyundai H100", "ESTADO": "MANTENIMIENTO", "KILOMETRAJE": "89,400 km", "SOAT": "Vigente 2027", "SUPERVISOR": "Ing. Javier Morales" },
-      { "PLACA": "W3X-521", "CUADRILLA": "CUADRILLA 05 - PLANTA EXTERNA", "CONDUCTOR": "Pedro Alarcón Silva", "VEHICULO": "Toyota Hilux 4x4", "ESTADO": "OPERATIVO", "KILOMETRAJE": "41,900 km", "SOAT": "Vigente 2027", "SUPERVISOR": "Ing. Roberto Chacón" },
-      { "PLACA": "T8B-114", "CUADRILLA": "CUADRILLA 06 - ENERGIA", "CONDUCTOR": "Andrés Gómez Parodi", "VEHICULO": "Kia K2700", "ESTADO": "OPERATIVO", "KILOMETRAJE": "74,300 km", "SOAT": "Vigente 2027", "SUPERVISOR": "Ing. Marcos Rivas" }
+    // Datos demostrativos de respaldo (si la hoja requiere inicio de sesión)
+    const fallbackDrivers = [
+      { "DNI": "45892147", "APELLIDOS Y NOMBRES": "Mendoza Ruiz Carlos Alberto", "CUADRILLA": "CUADRILLA 01 - FIBRA", "LICENCIA": "Q45892147", "CATEGORIA": "A-IIb", "VENCIMIENTO LICENCIA": "18/11/2028", "ESTADO": "AUTORIZADO", "VEHICULO ASIGNADO": "BZF-812" },
+      { "DNI": "71245896", "APELLIDOS Y NOMBRES": "Quispe Flores Jorge Luis", "CUADRILLA": "CUADRILLA 02 - TENDIDO", "LICENCIA": "Q71245896", "CATEGORIA": "A-IIa", "VENCIMIENTO LICENCIA": "24/05/2027", "ESTADO": "AUTORIZADO", "VEHICULO ASIGNADO": "C4T-790" },
+      { "DNI": "40215893", "APELLIDOS Y NOMBRES": "Ramos Salazar Luis Enrique", "CUADRILLA": "CUADRILLA 03 - EMPALME", "LICENCIA": "Q40215893", "CATEGORIA": "A-I", "VENCIMIENTO LICENCIA": "12/09/2027", "ESTADO": "AUTORIZADO", "VEHICULO ASIGNADO": "A9D-903" },
+      { "DNI": "46985214", "APELLIDOS Y NOMBRES": "Torres Castro Manuel Antonio", "CUADRILLA": "CUADRILLA 04 - OBRAS CIVILES", "LICENCIA": "Q46985214", "CATEGORIA": "A-IIb", "VENCIMIENTO LICENCIA": "30/12/2026", "ESTADO": "OBSERVADO", "VEHICULO ASIGNADO": "F1K-645" },
+      { "DNI": "44589632", "APELLIDOS Y NOMBRES": "Alarcón Silva Pedro Miguel", "CUADRILLA": "CUADRILLA 05 - PLANTA EXTERNA", "LICENCIA": "Q44589632", "CATEGORIA": "A-IIa", "VENCIMIENTO LICENCIA": "15/08/2028", "ESTADO": "AUTORIZADO", "VEHICULO ASIGNADO": "W3X-521" },
+      { "DNI": "48963251", "APELLIDOS Y NOMBRES": "Gómez Parodi Andrés David", "CUADRILLA": "CUADRILLA 06 - ENERGIA", "LICENCIA": "Q48963251", "CATEGORIA": "A-I", "VENCIMIENTO LICENCIA": "04/04/2028", "ESTADO": "AUTORIZADO", "VEHICULO ASIGNADO": "T8B-114" }
     ];
 
-    // INICIALIZACIÓN
     document.addEventListener('DOMContentLoaded', () => {
-      // Cargar tema
       const savedTheme = localStorage.getItem('md_panel_theme') || 'light';
       document.documentElement.setAttribute('data-theme', savedTheme);
 
-      // Cargar datos en caché o consultar
-      const cached = localStorage.getItem('md_vehicles_cache');
+      const cached = localStorage.getItem('md_drivers_cache');
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
-          if (parsed.vehicles && parsed.vehicles.length > 0) {
-            allVehiclesData = parsed.vehicles;
-            allHeaders = parsed.headers || Object.keys(allVehiclesData[0]);
+          if (parsed.drivers && parsed.drivers.length > 0) {
+            allDriversData = parsed.drivers;
+            allHeaders = parsed.headers || Object.keys(allDriversData[0]);
             detectColumnRoles(allHeaders);
             populateCuadrillasDropdown();
             renderStats();
@@ -1001,7 +938,6 @@
       fetchSpreadsheetData();
     });
 
-    // OBTENER DATOS DE GOOGLE SHEETS
     async function fetchSpreadsheetData() {
       const alertBox = document.getElementById('statusAlert');
       const alertText = document.getElementById('statusAlertText');
@@ -1009,7 +945,7 @@
 
       alertBox.style.display = 'flex';
       alertBox.className = 'alert-banner';
-      alertText.innerHTML = `Sincronizando con Google Sheets (ID: <code>${SPREADSHEET_ID}</code>)...`;
+      alertText.innerHTML = `Sincronizando con Google Sheets de Conductores (ID: <code>${SPREADSHEET_ID}</code>)...`;
       loader.style.display = 'flex';
 
       try {
@@ -1017,7 +953,6 @@
         if (!response.ok) throw new Error(`HTTP Status ${response.status}`);
         
         const rawText = await response.text();
-        // Parsear formato GViz JSON
         const jsonString = rawText.substring(rawText.indexOf('{'), rawText.lastIndexOf('}') + 1);
         const data = JSON.parse(jsonString);
 
@@ -1028,10 +963,10 @@
         processGvizTable(data.table);
 
         alertBox.className = 'alert-banner';
-        alertText.innerHTML = `✅ <strong>Sincronización exitosa:</strong> Se extrajeron <strong>${allVehiclesData.length}</strong> registros directamente desde tu Google Sheet oficial.`;
+        alertText.innerHTML = `✅ <strong>Sincronización exitosa:</strong> Se extrajeron <strong>${allDriversData.length}</strong> conductores directamente desde tu Google Sheet oficial.`;
         updateSyncTime();
       } catch (err) {
-        console.warn('Fallo al extraer GViz directo:', err);
+        console.warn('Fallo al extraer GViz directo de conductores:', err);
         handleFetchError();
       } finally {
         loader.style.display = 'none';
@@ -1044,21 +979,19 @@
         return;
       }
 
-      // Obtener nombres de columnas
       let headers = [];
       const hasLabels = table.cols && table.cols.some(c => c.label && c.label.trim() !== '');
 
       if (hasLabels) {
         headers = table.cols.map((c, i) => (c.label && c.label.trim()) || `Columna_${i + 1}`);
       } else {
-        // La primera fila contiene los encabezados
         const firstRow = table.rows[0];
         headers = firstRow.c.map((cell, i) => (cell && cell.v ? String(cell.v).trim() : `Columna_${i + 1}`));
-        table.rows.shift(); // Quitar la fila de encabezados
+        table.rows.shift();
       }
 
       allHeaders = headers;
-      allVehiclesData = [];
+      allDriversData = [];
 
       table.rows.forEach(row => {
         if (!row || !row.c) return;
@@ -1073,13 +1006,12 @@
         });
 
         if (hasAnyValue) {
-          allVehiclesData.push(rowObj);
+          allDriversData.push(rowObj);
         }
       });
 
-      // Guardar en caché local
-      localStorage.setItem('md_vehicles_cache', JSON.stringify({
-        vehicles: allVehiclesData,
+      localStorage.setItem('md_drivers_cache', JSON.stringify({
+        drivers: allDriversData,
         headers: allHeaders,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }));
@@ -1094,10 +1026,9 @@
       const alertBox = document.getElementById('statusAlert');
       const alertText = document.getElementById('statusAlertText');
 
-      if (allVehiclesData.length === 0) {
-        // Usar datos demostrativos precargados
-        allHeaders = Object.keys(fallbackVehicles[0]);
-        allVehiclesData = fallbackVehicles;
+      if (allDriversData.length === 0) {
+        allHeaders = Object.keys(fallbackDrivers[0]);
+        allDriversData = fallbackDrivers;
         detectColumnRoles(allHeaders);
         populateCuadrillasDropdown();
         renderStats();
@@ -1107,10 +1038,10 @@
       alertBox.className = 'alert-banner warning';
       alertText.innerHTML = `
         <div>
-          <strong>Información sobre permisos de Google Sheets:</strong><br>
-          Si tu hoja de cálculo está en modo <em>"Restringido"</em> en Google Drive, cámbiala a:
+          <strong>Información sobre permisos de Google Sheets (Conductores):</strong><br>
+          Si tu hoja está en modo <em>"Restringido"</em> en Google Drive, cámbiala a:
           <strong>Compartir ➡️ Acceso general: 'Cualquier persona con el enlace' (Lector)</strong> para que la sincronización en vivo funcione sin pedir inicio de sesión a los supervisores.
-          <br><span style="font-size:0.8rem; opacity:0.85;">Mostrando los registros almacenados en el sistema (${allVehiclesData.length} vehículos listos para consultar).</span>
+          <br><span style="font-size:0.8rem; opacity:0.85;">Mostrando los registros almacenados (${allDriversData.length} conductores listos para consultar).</span>
         </div>
       `;
       updateSyncTime();
@@ -1121,27 +1052,26 @@
       document.getElementById('statLastUpdate').innerText = timeStr;
     }
 
-    // DETECTAR COLUMNAS CLAVE POR PALABRAS
     function detectColumnRoles(headers) {
-      detectedCols = { placaIndex: -1, cuadrillaIndex: -1, conductorIndex: -1, modeloIndex: -1, estadoIndex: -1, kmIndex: -1, soatIndex: -1 };
+      detectedCols = { dniIndex: -1, nombreIndex: -1, cuadrillaIndex: -1, licenciaIndex: -1, categoriaIndex: -1, vencimientoIndex: -1, estadoIndex: -1, vehiculoIndex: -1 };
 
       headers.forEach((h, i) => {
         const norm = h.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        if (norm.includes('placa') || norm.includes('matricula') || norm.includes('patente')) detectedCols.placaIndex = i;
-        else if (norm.includes('cuadrilla') || norm.includes('frente') || norm.includes('grupo') || norm.includes('equipo')) detectedCols.cuadrillaIndex = i;
-        else if (norm.includes('conductor') || norm.includes('chofer') || norm.includes('responsable') || norm.includes('personal')) detectedCols.conductorIndex = i;
-        else if (norm.includes('vehiculo') || norm.includes('modelo') || norm.includes('marca') || norm.includes('unidad') || norm.includes('tipo')) detectedCols.modeloIndex = i;
-        else if (norm.includes('estado') || norm.includes('condicion') || norm.includes('operat')) detectedCols.estadoIndex = i;
-        else if (norm.includes('km') || norm.includes('kilometraje') || norm.includes('odometro')) detectedCols.kmIndex = i;
-        else if (norm.includes('soat') || norm.includes('seguro') || norm.includes('revision')) detectedCols.soatIndex = i;
+        if (norm.includes('dni') || norm.includes('documento') || norm.includes('identidad')) detectedCols.dniIndex = i;
+        else if (norm.includes('nombre') || norm.includes('apellido') || norm.includes('conductor') || norm.includes('chofer')) detectedCols.nombreIndex = i;
+        else if (norm.includes('cuadrilla') || norm.includes('frente') || norm.includes('equipo')) detectedCols.cuadrillaIndex = i;
+        else if (norm.includes('licencia') || norm.includes('brevete')) detectedCols.licenciaIndex = i;
+        else if (norm.includes('categoria') || norm.includes('clase')) detectedCols.categoriaIndex = i;
+        else if (norm.includes('vencimiento') || norm.includes('vigencia')) detectedCols.vencimientoIndex = i;
+        else if (norm.includes('estado') || norm.includes('habilit') || norm.includes('autoriz')) detectedCols.estadoIndex = i;
+        else if (norm.includes('vehiculo') || norm.includes('placa') || norm.includes('unidad')) detectedCols.vehiculoIndex = i;
       });
 
-      // Si no se detectó placa o cuadrilla, usar índices por defecto 0 y 1
-      if (detectedCols.placaIndex === -1 && headers.length > 0) detectedCols.placaIndex = 0;
-      if (detectedCols.cuadrillaIndex === -1 && headers.length > 1) detectedCols.cuadrillaIndex = 1;
+      if (detectedCols.dniIndex === -1 && headers.length > 0) detectedCols.dniIndex = 0;
+      if (detectedCols.nombreIndex === -1 && headers.length > 1) detectedCols.nombreIndex = 1;
+      if (detectedCols.cuadrillaIndex === -1 && headers.length > 2) detectedCols.cuadrillaIndex = 2;
     }
 
-    // LLENAR SELECTOR DE CUADRILLAS
     function populateCuadrillasDropdown() {
       const select = document.getElementById('selectCuadrilla');
       select.innerHTML = '<option value="">-- Todas las Cuadrillas --</option>';
@@ -1149,8 +1079,8 @@
       const cuadrillaHeader = allHeaders[detectedCols.cuadrillaIndex];
       const cuadrillasSet = new Set();
 
-      allVehiclesData.forEach(v => {
-        const val = v[cuadrillaHeader];
+      allDriversData.forEach(d => {
+        const val = d[cuadrillaHeader];
         if (val && val.trim() !== '') cuadrillasSet.add(val.trim());
       });
 
@@ -1161,57 +1091,40 @@
         opt.textContent = c;
         select.appendChild(opt);
       });
-
-      // Crear píldoras rápidas
-      const pillsContainer = document.getElementById('quickPillsList');
-      pillsContainer.innerHTML = '';
-      sorted.slice(0, 5).forEach(c => {
-        const pill = document.createElement('button');
-        pill.className = 'quick-pill';
-        pill.innerText = c;
-        pill.onclick = () => {
-          switchSearchMode('cuadrilla');
-          document.getElementById('selectCuadrilla').value = c;
-          executeSearch();
-        };
-        pillsContainer.appendChild(pill);
-      });
     }
 
-    // ESTADÍSTICAS
     function renderStats() {
-      document.getElementById('statTotalVehiculos').innerText = allVehiclesData.length;
+      document.getElementById('statTotalConductores').innerText = allDriversData.length;
 
-      const cuadrillaHeader = allHeaders[detectedCols.cuadrillaIndex];
-      const cuadrillasSet = new Set();
-      allVehiclesData.forEach(v => {
-        const val = v[cuadrillaHeader];
-        if (val && val.trim() !== '') cuadrillasSet.add(val.trim());
+      const estadoH = allHeaders[detectedCols.estadoIndex];
+      let habCount = 0;
+      allDriversData.forEach(d => {
+        const val = (d[estadoH] || '').toLowerCase();
+        if (val.includes('aut') || val.includes('hab') || val.includes('vig') || val.includes('ok')) habCount++;
       });
-      document.getElementById('statTotalCuadrillas').innerText = cuadrillasSet.size;
+      document.getElementById('statHabilitados').innerText = habCount > 0 ? habCount : allDriversData.length;
     }
 
-    // CAMBIAR MODO DE BÚSQUEDA
     function switchSearchMode(mode) {
       currentMode = mode;
       document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
 
-      const areaPlaca = document.getElementById('searchAreaPlaca');
+      const areaDni = document.getElementById('searchAreaDni');
       const areaCuadrilla = document.getElementById('searchAreaCuadrilla');
 
-      if (mode === 'placa') {
-        document.getElementById('tabPlaca').classList.add('active');
-        areaPlaca.style.display = 'flex';
+      if (mode === 'dni') {
+        document.getElementById('tabDni').classList.add('active');
+        areaDni.style.display = 'flex';
         areaCuadrilla.style.display = 'none';
-        document.getElementById('inputPlaca').focus();
+        document.getElementById('inputDni').focus();
       } else if (mode === 'cuadrilla') {
         document.getElementById('tabCuadrilla').classList.add('active');
-        areaPlaca.style.display = 'none';
+        areaDni.style.display = 'none';
         areaCuadrilla.style.display = 'flex';
         document.getElementById('selectCuadrilla').focus();
       } else {
         document.getElementById('tabTodos').classList.add('active');
-        areaPlaca.style.display = 'none';
+        areaDni.style.display = 'none';
         areaCuadrilla.style.display = 'none';
       }
 
@@ -1219,48 +1132,47 @@
     }
 
     function clearSearch() {
-      document.getElementById('inputPlaca').value = '';
+      document.getElementById('inputDni').value = '';
       document.getElementById('selectCuadrilla').value = '';
       document.getElementById('inputCuadrillaText').value = '';
       executeSearch();
     }
 
-    // EJECUTAR BÚSQUEDA Y FILTRADO
     function executeSearch() {
-      const placaHeader = allHeaders[detectedCols.placaIndex];
-      const cuadrillaHeader = allHeaders[detectedCols.cuadrillaIndex];
+      const dniH = allHeaders[detectedCols.dniIndex];
+      const nombreH = allHeaders[detectedCols.nombreIndex];
+      const cuadrillaH = allHeaders[detectedCols.cuadrillaIndex];
 
-      const queryPlaca = document.getElementById('inputPlaca').value.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const queryDni = document.getElementById('inputDni').value.toLowerCase().trim();
       const selectCuad = document.getElementById('selectCuadrilla').value.toLowerCase().trim();
       const textCuad = document.getElementById('inputCuadrillaText').value.toLowerCase().trim();
 
-      const filtered = allVehiclesData.filter(v => {
-        if (currentMode === 'placa') {
-          if (!queryPlaca) return true;
-          const valPlaca = (v[placaHeader] || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-          // También busca en toda la fila por si la placa está en otra columna
-          const fullRow = Object.values(v).join(' ').toLowerCase().replace(/[^a-z0-9]/g, '');
-          return valPlaca.includes(queryPlaca) || fullRow.includes(queryPlaca);
+      const filtered = allDriversData.filter(d => {
+        if (currentMode === 'dni') {
+          if (!queryDni) return true;
+          const valDni = (d[dniH] || '').toLowerCase();
+          const valNombre = (d[nombreH] || '').toLowerCase();
+          const fullRow = Object.values(d).join(' ').toLowerCase();
+          return valDni.includes(queryDni) || valNombre.includes(queryDni) || fullRow.includes(queryDni);
         } else if (currentMode === 'cuadrilla') {
-          const valCuad = (v[cuadrillaHeader] || '').toLowerCase();
+          const valCuad = (d[cuadrillaH] || '').toLowerCase();
           const matchesSelect = !selectCuad || valCuad.includes(selectCuad);
           const matchesText = !textCuad || valCuad.includes(textCuad);
           return matchesSelect && matchesText;
         } else {
-          return true; // 'todos'
+          return true;
         }
       });
 
       renderResults(filtered);
     }
 
-    // RENDERIZAR RESULTADOS
     function renderResults(list) {
       document.getElementById('statFiltrados').innerText = list.length;
-      document.getElementById('badgeResultCount').innerText = `${list.length} unidades`;
+      document.getElementById('badgeResultCount').innerText = `${list.length} conductores`;
 
-      const grid = document.getElementById('vehiclesGrid');
-      const tableWrap = document.getElementById('vehiclesTableWrap');
+      const grid = document.getElementById('driversGrid');
+      const tableWrap = document.getElementById('driversTableWrap');
       const empty = document.getElementById('emptyState');
 
       if (list.length === 0) {
@@ -1283,83 +1195,80 @@
       }
     }
 
-    // VISTA DE TARJETAS
     function renderCardsView(list) {
-      const grid = document.getElementById('vehiclesGrid');
+      const grid = document.getElementById('driversGrid');
       grid.innerHTML = '';
 
-      const placaH = allHeaders[detectedCols.placaIndex];
+      const dniH = allHeaders[detectedCols.dniIndex];
+      const nombreH = allHeaders[detectedCols.nombreIndex];
       const cuadrillaH = allHeaders[detectedCols.cuadrillaIndex];
-      const conductorH = allHeaders[detectedCols.conductorIndex];
-      const modeloH = allHeaders[detectedCols.modeloIndex];
+      const licenciaH = allHeaders[detectedCols.licenciaIndex];
+      const categoriaH = allHeaders[detectedCols.categoriaIndex];
+      const vencimientoH = allHeaders[detectedCols.vencimientoIndex];
       const estadoH = allHeaders[detectedCols.estadoIndex];
-      const kmH = allHeaders[detectedCols.kmIndex];
+      const vehiculoH = allHeaders[detectedCols.vehiculoIndex];
 
-      list.forEach((v, index) => {
-        const placa = v[placaH] || 'S/P';
-        const cuadrilla = v[cuadrillaH] || 'Sin Cuadrilla Asignada';
-        const conductor = conductorH ? (v[conductorH] || 'No especificado') : '';
-        const modelo = modeloH ? (v[modeloH] || 'Vehículo Operativo') : '';
-        const estado = estadoH ? (v[estadoH] || 'Operativo') : '';
-        const km = kmH ? (v[kmH] || '--') : '';
+      list.forEach(d => {
+        const dni = d[dniH] || 'S/DNI';
+        const nombre = d[nombreH] || 'Conductor Autorizado';
+        const cuadrilla = cuadrillaH ? (d[cuadrillaH] || 'General') : '';
+        const licencia = licenciaH ? (d[licenciaH] || dni) : '';
+        const categoria = categoriaH ? (d[categoriaH] || 'A-I') : '';
+        const vencimiento = vencimientoH ? (d[vencimientoH] || 'Vigente') : '';
+        const estado = estadoH ? (d[estadoH] || 'AUTORIZADO') : 'AUTORIZADO';
+        const vehiculo = vehiculoH ? (d[vehiculoH] || '') : '';
 
-        const isTaller = estado.toLowerCase().includes('manten') || estado.toLowerCase().includes('taller') || estado.toLowerCase().includes('inop');
-        const estadoColor = isTaller ? 'var(--accent-danger)' : 'var(--accent-success)';
-        const estadoBg = isTaller ? '#fee2e2' : '#dcfce7';
+        const isVencido = estado.toLowerCase().includes('venc') || estado.toLowerCase().includes('inhab') || estado.toLowerCase().includes('no');
+        const isObservado = estado.toLowerCase().includes('obs') || estado.toLowerCase().includes('pend');
+        const badgeClass = isVencido ? 'danger' : (isObservado ? 'warning' : 'active');
 
         const card = document.createElement('article');
-        card.className = 'vehicle-card';
+        card.className = 'driver-card';
         card.innerHTML = `
-          <div class="vehicle-card-header">
-            <span class="plate-badge">${escapeHtml(placa)}</span>
-            <span class="cuadrilla-badge">${escapeHtml(cuadrilla)}</span>
+          <div class="driver-card-header">
+            <span class="dni-badge">DNI: ${escapeHtml(dni)}</span>
+            <span class="status-badge ${badgeClass}">● ${escapeHtml(estado)}</span>
           </div>
 
-          <div class="vehicle-card-body">
-            ${modelo ? `
+          <div class="driver-card-body">
+            <h3 class="driver-name">${escapeHtml(nombre)}</h3>
+
+            ${cuadrilla ? `
               <div class="info-row">
                 <span class="info-label">
-                  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2 10.9 2 11.2 2 11.5V16c0 .6.4 1 1 1h2m10 0a2 2 0 100-4 2 2 0 000 4zm-10 0a2 2 0 100-4 2 2 0 000 4z"/></svg>
-                  Modelo / Unidad:
+                  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+                  Cuadrilla:
                 </span>
-                <span class="info-val">${escapeHtml(modelo)}</span>
+                <span class="info-val" style="color:var(--color-sheets);">${escapeHtml(cuadrilla)}</span>
               </div>
             ` : ''}
 
-            ${conductor ? `
+            ${licencia ? `
               <div class="info-row">
-                <span class="info-label">
-                  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2m8-10a4 4 0 100-8 4 4 0 000 8z"/></svg>
-                  Conductor:
-                </span>
-                <span class="info-val">${escapeHtml(conductor)}</span>
+                <span class="info-label">Brevete MTC:</span>
+                <span class="info-val">${escapeHtml(licencia)} ${categoria ? `(${escapeHtml(categoria)})` : ''}</span>
               </div>
             ` : ''}
 
-            ${km && km !== '--' ? `
+            ${vencimiento ? `
               <div class="info-row">
-                <span class="info-label">
-                  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                  Kilometraje:
-                </span>
-                <span class="info-val">${escapeHtml(km)}</span>
+                <span class="info-label">Vencimiento Licencia:</span>
+                <span class="info-val">${escapeHtml(vencimiento)}</span>
               </div>
             ` : ''}
 
-            ${estado ? `
+            ${vehiculo ? `
               <div class="info-row">
-                <span class="info-label">Estado:</span>
-                <span class="info-val" style="color:${estadoColor}; background:${estadoBg}; padding:0.15rem 0.5rem; border-radius:6px; font-size:0.78rem;">
-                  ● ${escapeHtml(estado)}
-                </span>
+                <span class="info-label">Vehículo Asignado:</span>
+                <span class="info-val" style="background:#0f172a; color:#fbbf24; padding:0.15rem 0.5rem; border-radius:6px; font-family:monospace;">${escapeHtml(vehiculo)}</span>
               </div>
             ` : ''}
           </div>
 
-          <div class="vehicle-card-footer">
-            <button class="btn-card-action" style="flex:1;" onclick="openVehicleDetail(${allVehiclesData.indexOf(v)})">
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-              Ver Ficha Detallada
+          <div class="driver-card-footer">
+            <button class="btn-view-detail" onclick="openDriverDetail(${allDriversData.indexOf(d)})">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              Ver Ficha Completa
             </button>
           </div>
         `;
@@ -1367,10 +1276,9 @@
       });
     }
 
-    // VISTA DE TABLA
     function renderTableView(list) {
-      const thead = document.getElementById('vehiclesTableHead');
-      const tbody = document.getElementById('vehiclesTableBody');
+      const thead = document.getElementById('driversTableHead');
+      const tbody = document.getElementById('driversTableBody');
 
       thead.innerHTML = '';
       tbody.innerHTML = '';
@@ -1386,17 +1294,17 @@
       trHead.appendChild(thAction);
       thead.appendChild(trHead);
 
-      list.forEach(v => {
+      list.forEach(d => {
         const tr = document.createElement('tr');
         allHeaders.forEach(h => {
           const td = document.createElement('td');
-          td.textContent = v[h] || '-';
+          td.textContent = d[h] || '-';
           tr.appendChild(td);
         });
 
         const tdAct = document.createElement('td');
         tdAct.innerHTML = `
-          <button class="btn-clear" style="padding:0.3rem 0.6rem; font-size:0.75rem;" onclick="openVehicleDetail(${allVehiclesData.indexOf(v)})">
+          <button class="btn-clear" style="padding:0.3rem 0.6rem; font-size:0.75rem;" onclick="openDriverDetail(${allDriversData.indexOf(d)})">
             Ver Ficha
           </button>
         `;
@@ -1405,7 +1313,6 @@
       });
     }
 
-    // CAMBIAR ENTRE VISTA TARJETAS Y TABLA
     function switchView(view) {
       currentView = view;
       document.getElementById('btnViewCards').classList.toggle('active', view === 'cards');
@@ -1413,19 +1320,18 @@
       executeSearch();
     }
 
-    // MODAL DE DETALLE
-    function openVehicleDetail(index) {
-      const v = allVehiclesData[index];
-      if (!v) return;
+    function openDriverDetail(index) {
+      const d = allDriversData[index];
+      if (!d) return;
 
-      const placaH = allHeaders[detectedCols.placaIndex];
-      const placa = v[placaH] || 'Vehículo';
+      const nombreH = allHeaders[detectedCols.nombreIndex];
+      const nombre = d[nombreH] || 'Conductor';
 
-      document.getElementById('modalVehicleTitle').innerText = `Ficha Técnica: Placa ${placa}`;
+      document.getElementById('modalDriverTitle').innerText = `Ficha Técnica: ${nombre}`;
 
       let html = `<div style="display:flex; flex-direction:column; gap:0.65rem;">`;
       allHeaders.forEach(h => {
-        const val = v[h] || 'No registrado';
+        const val = d[h] || 'No registrado';
         html += `
           <div style="display:flex; justify-content:space-between; align-items:flex-start; padding:0.45rem 0; border-bottom:1px solid var(--border); font-size:0.9rem;">
             <strong style="color:var(--text-muted); max-width:40%;">${escapeHtml(h)}:</strong>
@@ -1435,21 +1341,12 @@
       });
       html += `</div>`;
 
-      document.getElementById('modalVehicleContent').innerHTML = html;
+      document.getElementById('modalDriverContent').innerHTML = html;
       document.getElementById('detailModal').classList.add('active');
     }
 
     function closeDetailModal() {
       document.getElementById('detailModal').classList.remove('active');
-    }
-
-
-
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.innerText = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2800);
     }
 
     function toggleTheme() {

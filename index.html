@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel de Supervisión Operativa de Construcción de Redes M&D</title>
-  <meta name="description" content="Portal oficial centralizado de acceso a formularios, reportes de supervisión y tableros Power BI de M&D Construcción de Redes." />
+  <meta name="description" content="Portal oficial centralizado de acceso a formularios, consultas operativas y tableros de M&D Construcción de Redes." />
   
   <!-- Favicon SVG con temática de Redes M&D -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a2540'/><circle cx='50' cy='50' r='35' stroke='%2338bdf8' stroke-width='6' fill='none'/><path d='M25 50h50M50 25v50' stroke='%2338bdf8' stroke-width='4'/><circle cx='50' cy='50' r='10' fill='%23f59e0b'/></svg>" />
@@ -33,6 +33,10 @@
       --color-sheets-bg: #ecfdf5;
       --color-powerbi: #d97706;
       --color-powerbi-bg: #fffbeb;
+      --color-win: #ea580c;
+      --color-win-bg: #fff7ed;
+      --color-sctr: #0284c7;
+      --color-sctr-bg: #f0f9ff;
 
       --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
       --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
@@ -55,6 +59,8 @@
       --color-forms-bg: #281944;
       --color-sheets-bg: #093325;
       --color-powerbi-bg: #38240a;
+      --color-win-bg: #3b1e08;
+      --color-sctr-bg: #082846;
     }
 
     * {
@@ -157,7 +163,7 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.55rem;
       flex-wrap: wrap;
     }
 
@@ -166,14 +172,14 @@
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: #f8fafc;
-      padding: 0.55rem 1rem;
+      padding: 0.55rem 0.9rem;
       border-radius: 10px;
-      font-size: 0.85rem;
-      font-weight: 600;
+      font-size: 0.84rem;
+      font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
       transition: var(--transition);
       text-decoration: none;
     }
@@ -221,7 +227,7 @@
       border-radius: 10px;
       padding: 0.5rem 0.85rem;
       flex: 1;
-      max-width: 460px;
+      max-width: 440px;
     }
 
     .search-box input {
@@ -235,7 +241,7 @@
 
     .filters-group {
       display: flex;
-      gap: 0.45rem;
+      gap: 0.4rem;
       overflow-x: auto;
       padding-bottom: 2px;
     }
@@ -295,7 +301,7 @@
       border-radius: 12px;
     }
 
-    /* GRID OF CARDS (8 MÓDULOS) */
+    /* GRID OF CARDS */
     .grid-forms {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
@@ -339,6 +345,8 @@
     .stripe-sheets { background: var(--color-sheets); }
     .stripe-forms { background: var(--color-forms); }
     .stripe-powerbi { background: linear-gradient(90deg, #f59e0b, #eab308); }
+    .stripe-win { background: linear-gradient(90deg, #ea580c, #f97316); }
+    .stripe-sctr { background: linear-gradient(90deg, #0284c7, #10b981); }
 
     .card-header-top {
       display: flex;
@@ -359,20 +367,11 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .icon-sheets {
-      background: var(--color-sheets-bg);
-      color: var(--color-sheets);
-    }
-
-    .icon-forms {
-      background: var(--color-forms-bg);
-      color: var(--color-forms);
-    }
-
-    .icon-powerbi {
-      background: var(--color-powerbi-bg);
-      color: var(--color-powerbi);
-    }
+    .icon-sheets { background: var(--color-sheets-bg); color: var(--color-sheets); }
+    .icon-forms { background: var(--color-forms-bg); color: var(--color-forms); }
+    .icon-powerbi { background: var(--color-powerbi-bg); color: var(--color-powerbi); }
+    .icon-win { background: var(--color-win-bg); color: var(--color-win); }
+    .icon-sctr { background: var(--color-sctr-bg); color: var(--color-sctr); }
 
     .badge-platform {
       font-size: 0.7rem;
@@ -399,6 +398,18 @@
       background: var(--color-powerbi-bg);
       color: #b45309;
       border: 1px solid rgba(217, 119, 6, 0.2);
+    }
+
+    .badge-win {
+      background: var(--color-win-bg);
+      color: var(--color-win);
+      border: 1px solid rgba(234, 88, 12, 0.2);
+    }
+
+    .badge-sctr {
+      background: var(--color-sctr-bg);
+      color: #0369a1;
+      border: 1px solid rgba(2, 132, 199, 0.25);
     }
 
     .card-body {
@@ -431,7 +442,7 @@
     .card-footer {
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
+      gap: 0.45rem;
       margin-top: auto;
       border-top: 1px dashed var(--border);
       padding-top: 0.95rem;
@@ -478,26 +489,20 @@
       box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
     }
 
-    .btn-copy {
-      background: var(--surface-subtle);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 0.45rem 0.6rem;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.35rem;
-      transition: var(--transition);
+    .btn-open-win {
+      background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+    }
+    .btn-open-win:hover {
+      background: linear-gradient(135deg, #c2410c 0%, #9a3412 100%);
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35);
     }
 
-    .btn-copy:hover {
-      background: var(--surface);
-      color: var(--text-main);
-      border-color: var(--primary);
+    .btn-open-sctr {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    }
+    .btn-open-sctr:hover {
+      background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
     }
 
     /* FOOTER */
@@ -519,33 +524,6 @@
       align-items: center;
       gap: 0.65rem;
     }
-
-    /* TOAST */
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: var(--navy-950);
-      color: white;
-      padding: 0.85rem 1.25rem;
-      border-radius: 12px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      box-shadow: var(--shadow-lg);
-      transform: translateY(100px);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 200;
-      border-left: 4px solid #10b981;
-    }
-
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
   </style>
 </head>
 <body>
@@ -554,7 +532,7 @@
   <header class="header">
     <div class="header-container">
       <div class="brand-section">
-        <!-- Logo M&D (Carga logo.png automáticamente) -->
+        <!-- Logo M&D -->
         <div class="logo-container" title="Redes M&amp;D">
           <img src="logo.png" alt="Logo Redes M&amp;D" onerror="this.style.display='none'; document.getElementById('fallbackLogoSvg').style.display='block';" />
           <svg id="fallbackLogoSvg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
@@ -573,8 +551,16 @@
 
       <div class="header-actions">
         <a href="consulta-vehiculos.html" class="btn-action" style="background:#0284c7; border-color:#38bdf8;" title="Consultar vehículos por Placa o Cuadrilla">
-          <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          Consulta Vehículos
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Vehículos
+        </a>
+        <a href="consulta-conductores.html" class="btn-action" style="background:#059669; border-color:#34d399;" title="Consultar conductores autorizados por DNI o Cuadrilla">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2"/></svg>
+          Conductores
+        </a>
+        <a href="consulta-sctr.html" class="btn-action" style="background:#0284c7; border-color:#38bdf8;" title="Consultar si el técnico cuenta con SCTR y descargar PDF">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          SCTR
         </a>
         <button class="btn-action" onclick="toggleTheme()" id="themeBtn" title="Cambiar tema">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
@@ -593,10 +579,11 @@
       </div>
 
       <div class="filters-group">
-        <button class="filter-chip active" onclick="setFilter('all', this)">Todos (8)</button>
-        <button class="filter-chip" onclick="setFilter('forms', this)">Formularios (3)</button>
-        <button class="filter-chip" onclick="setFilter('sheets', this)">Hojas de Cálculo (3)</button>
-        <button class="filter-chip" onclick="setFilter('powerbi', this)">Power BI (2)</button>
+        <button class="filter-chip active" data-filter="all" onclick="setFilter('all', this)">Todos (10)</button>
+        <button class="filter-chip" data-filter="forms" onclick="setFilter('forms', this)">Formularios (4)</button>
+        <button class="filter-chip" data-filter="sheets" onclick="setFilter('sheets', this)">Hojas de Cálculo (3)</button>
+        <button class="filter-chip" data-filter="powerbi" onclick="setFilter('powerbi', this)">Power BI (2)</button>
+        <button class="filter-chip" data-filter="ssoma" onclick="setFilter('ssoma', this)">SSOMA &amp; SCTR (1)</button>
       </div>
     </div>
   </div>
@@ -607,24 +594,19 @@
     <div class="section-intro">
       <h2>
         <span>Módulos Operativos Oficiales</span>
-        <span class="counter-badge" id="visibleCounter">8 disponibles</span>
+        <span class="counter-badge" id="visibleCounter">10 disponibles</span>
       </h2>
-      <button class="btn-action" style="color: var(--text-muted); background: transparent; border-color: var(--border);" onclick="copyAllLinksSummary()">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-        Copiar lista para WhatsApp
-      </button>
     </div>
 
-    <!-- CARDS GRID (8 MÓDULOS) -->
+    <!-- CARDS GRID -->
     <div class="grid-forms" id="formsGrid">
 
       <!-- 1. CONTROL DE VEHÍCULOS -->
-      <article class="form-card" data-type="sheets" data-title="control de vehiculos">
+      <article class="form-card" data-type="sheets" data-title="control de vehiculos flota camionetas">
         <div class="card-top-stripe stripe-sheets"></div>
         <div>
           <div class="card-header-top">
             <div class="icon-wrapper icon-sheets">
-              <!-- Car/Truck Icon -->
               <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10m10 0H3m10 0h3m4 0h1a1 1 0 001-1v-4a1 1 0 00-.293-.707l-3-3A1 1 0 0017.586 7H16v9m0 0h3"/></svg>
             </div>
             <span class="badge-platform badge-sheets">Google Sheets</span>
@@ -646,20 +628,15 @@
             <span>Abrir Hoja de Cálculo Completa</span>
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           </a>
-          <button class="btn-copy" onclick="copyDirectLink('https://docs.google.com/spreadsheets/d/16DXaYOtafd7o3phBfwRnivvb2o2C0AfY2ezyEDd-5w4/edit?usp=sharing')">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
-            Copiar Enlace
-          </button>
         </div>
       </article>
 
       <!-- 2. CONTROL DE CONDUCTORES -->
-      <article class="form-card" data-type="sheets" data-title="control de conductores licencias">
+      <article class="form-card" data-type="sheets" data-title="control de conductores licencias brevete mtc">
         <div class="card-top-stripe stripe-sheets"></div>
         <div>
           <div class="card-header-top">
             <div class="icon-wrapper icon-sheets">
-              <!-- Driver license / user badge -->
               <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
             </div>
             <span class="badge-platform badge-sheets">Google Sheets</span>
@@ -673,14 +650,14 @@
           </div>
         </div>
         <div class="card-footer">
-          <a href="https://docs.google.com/spreadsheets/d/12S7SMuUaEetUrIJMaV6horx7fbGlDPPAEog-e1gqrTg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-sheets">
-            <span>Abrir Hoja de Cálculo</span>
-            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          <a href="consulta-conductores.html" class="btn-open" style="background:#059669; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Consultar Conductores Autorizados</span>
           </a>
-          <button class="btn-copy" onclick="copyDirectLink('https://docs.google.com/spreadsheets/d/12S7SMuUaEetUrIJMaV6horx7fbGlDPPAEog-e1gqrTg/edit?usp=sharing')">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
-            Copiar Enlace
-          </button>
+          <a href="https://docs.google.com/spreadsheets/d/12S7SMuUaEetUrIJMaV6horx7fbGlDPPAEog-e1gqrTg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-sheets" style="padding:0.5rem 0.8rem; font-size:0.8rem;">
+            <span>Abrir Hoja de Cálculo Completa</span>
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
         </div>
       </article>
 
@@ -690,7 +667,6 @@
         <div>
           <div class="card-header-top">
             <div class="icon-wrapper icon-forms">
-              <!-- Alert / Inspection icon -->
               <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
             </div>
             <span class="badge-platform badge-forms">Google Forms</span>
@@ -708,10 +684,6 @@
             <span>Abrir Formulario</span>
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           </a>
-          <button class="btn-copy" onclick="copyDirectLink('https://forms.gle/fKfKr6SGDna8Y523A')">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
-            Copiar Enlace
-          </button>
         </div>
       </article>
 
@@ -721,7 +693,6 @@
         <div>
           <div class="card-header-top">
             <div class="icon-wrapper icon-forms">
-              <!-- Checkmark / Resolved icon -->
               <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <span class="badge-platform badge-forms">Google Forms</span>
@@ -739,10 +710,6 @@
             <span>Abrir Formulario de Cierre</span>
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           </a>
-          <button class="btn-copy" onclick="copyDirectLink('https://forms.gle/4CVbTQyeXPihyUVc6')">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
-            Copiar Enlace
-          </button>
         </div>
       </article>
 
@@ -752,7 +719,6 @@
         <div>
           <div class="card-header-top">
             <div class="icon-wrapper icon-powerbi">
-              <!-- Bar chart / Analytics -->
               <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
             </div>
             <span class="badge-platform badge-powerbi">Power BI</span>
@@ -770,10 +736,6 @@
             <span>Abrir Dashboard Power BI</span>
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           </a>
-          <button class="btn-copy" onclick="copyDirectLink('https://app.powerbi.com/view?r=eyJrIjoiMzRjNGUzMzEtNGEzOC00M2M3LWFmNzItOTg4NDIzNTVhODNiIiwidCI6ImY2YTA3ODJkLWYxOWQtNGQ1OC1hZjYyLTUyMDIyNDZmZjQxYyIsImMiOjR9')">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
-            Copiar Enlace
-          </button>
         </div>
       </article>
 
@@ -783,8 +745,7 @@
         <div>
           <div class="card-header-top">
             <div class="icon-wrapper icon-powerbi">
-              <!-- Certificate / Badge icon -->
-              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z"/></svg>
             </div>
             <span class="badge-platform badge-powerbi">Power BI</span>
           </div>
@@ -801,10 +762,6 @@
             <span>Abrir Dashboard Certificación</span>
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           </a>
-          <button class="btn-copy" onclick="copyDirectLink('https://app.powerbi.com/view?r=eyJrIjoiMDEzNGI2OTgtNTFjZS00MWIwLTg5MjgtM2ExMmQyNjVmMGQwIiwidCI6ImZhY2I1NjA3LTBhNDMtNDQwOS1hY2MxLWIxZTI2OWZhZjdhOCIsImMiOjR9&pageName=5e6d8e39e3e25d735e1d')">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
-            Copiar Enlace
-          </button>
         </div>
       </article>
 
@@ -814,7 +771,6 @@
         <div>
           <div class="card-header-top">
             <div class="icon-wrapper icon-forms">
-              <!-- Users / Team check icon -->
               <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
             </div>
             <span class="badge-platform badge-forms">Google Forms</span>
@@ -832,20 +788,15 @@
             <span>Abrir Formulario de Visita</span>
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           </a>
-          <button class="btn-copy" onclick="copyDirectLink('https://forms.gle/Bg3JCQ3G9xm6ZQBD6')">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
-            Copiar Enlace
-          </button>
         </div>
       </article>
 
-      <!-- 8. ROTACIÓN SEMANAL (ORGANIGRAMA SEMANAL DE SUPERVISORES) -->
+      <!-- 8. ROTACIÓN SEMANAL -->
       <article class="form-card" data-type="sheets" data-title="rotacion semanal organigrama de supervisores turnos">
         <div class="card-top-stripe stripe-sheets"></div>
         <div>
           <div class="card-header-top">
             <div class="icon-wrapper icon-sheets">
-              <!-- Calendar / Schedule icon -->
               <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             </div>
             <span class="badge-platform badge-sheets">Google Sheets</span>
@@ -863,10 +814,60 @@
             <span>Ver Rotación Semanal</span>
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           </a>
-          <button class="btn-copy" onclick="copyDirectLink('https://docs.google.com/spreadsheets/d/1FTuGbgxTv_osgVCmhekxlnwIPNCREIjzicL9-ewjQyc/edit?usp=sharing')">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
-            Copiar Enlace
-          </button>
+        </div>
+      </article>
+
+      <!-- 9. FORMULARIO DE WIN (NUEVO REQUERIMIENTO) -->
+      <article class="form-card" data-type="forms" data-title="formulario de win telecom operaciones clientes fibra">
+        <div class="card-top-stripe stripe-win"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-win">
+              <!-- Win network icon -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <span class="badge-platform badge-win">Formulario WIN</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number" style="color:var(--color-win);">MÓDULO 09</span>
+            <h3 class="card-title">Formulario de WIN</h3>
+            <p class="card-description">
+              Formulario oficial para registro de actividades operativas, instalaciones, validación técnica y protocolos de la red WIN.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSciCCgKv9qUQJlfGuhZ6Kymacs3_ovW5_p49gts4s3LEzmxhg/viewform" target="_blank" rel="noopener noreferrer" class="btn-open btn-open-win">
+            <span>Abrir Formulario WIN</span>
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- 10. CONSULTA Y COBERTURA SCTR (NUEVO REQUERIMIENTO) -->
+      <article class="form-card" data-type="ssoma" data-title="consulta sctr seguro complementario trabajo riesgo tecnicos pdf poliza">
+        <div class="card-top-stripe stripe-sctr"></div>
+        <div>
+          <div class="card-header-top">
+            <div class="icon-wrapper icon-sctr">
+              <!-- Shield icon -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <span class="badge-platform badge-sctr">Gestión SSOMA</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number" style="color:var(--color-sctr);">MÓDULO 10</span>
+            <h3 class="card-title">Consulta de SCTR</h3>
+            <p class="card-description">
+              Verificación de pólizas activas de técnicos (Salud y Pensión), control de vigencias y descarga del certificado PDF oficial.
+            </p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="consulta-sctr.html" class="btn-open btn-open-sctr">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Consultar SCTR / Descargar PDF</span>
+          </a>
         </div>
       </article>
 
@@ -882,57 +883,7 @@
     </div>
   </footer>
 
-  <!-- TOAST NOTIFICATION -->
-  <div class="toast" id="toast">
-    <svg width="20" height="20" fill="none" stroke="#10b981" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-    <span id="toastMessage">Enlace copiado</span>
-  </div>
-
   <script>
-    // Lista fija e inmutable de enlaces
-    const officialLinks = [
-      { name: "1. Control De Vehículos", url: "https://docs.google.com/spreadsheets/d/16DXaYOtafd7o3phBfwRnivvb2o2C0AfY2ezyEDd-5w4/edit?usp=sharing" },
-      { name: "2. Control de Conductores", url: "https://docs.google.com/spreadsheets/d/12S7SMuUaEetUrIJMaV6horx7fbGlDPPAEog-e1gqrTg/edit?usp=sharing" },
-      { name: "3. Registro Único de Observaciones", url: "https://forms.gle/fKfKr6SGDna8Y523A" },
-      { name: "4. Cierre de Observaciones de Supervisión", url: "https://forms.gle/4CVbTQyeXPihyUVc6" },
-      { name: "5. Power BI de Garantías", url: "https://app.powerbi.com/view?r=eyJrIjoiMzRjNGUzMzEtNGEzOC00M2M3LWFmNzItOTg4NDIzNTVhODNiIiwidCI6ImY2YTA3ODJkLWYxOWQtNGQ1OC1hZjYyLTUyMDIyNDZmZjQxYyIsImMiOjR9" },
-      { name: "6. Certificación", url: "https://app.powerbi.com/view?r=eyJrIjoiMDEzNGI2OTgtNTFjZS00MWIwLTg5MjgtM2ExMmQyNjVmMGQwIiwidCI6ImZhY2I1NjA3LTBhNDMtNDQwOS1hY2MxLWIxZTI2OWZhZjdhOCIsImMiOjR9&pageName=5e6d8e39e3e25d735e1d" },
-      { name: "7. Registro de Visitas a Cuadrillas Críticas", url: "https://forms.gle/Bg3JCQ3G9xm6ZQBD6" },
-      { name: "8. Rotación Semanal de Supervisores", url: "https://docs.google.com/spreadsheets/d/1FTuGbgxTv_osgVCmhekxlnwIPNCREIjzicL9-ewjQyc/edit?usp=sharing" }
-    ];
-
-    // Copiar enlace individual
-    function copyDirectLink(url) {
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(url).then(() => {
-          showToast('¡Enlace copiado al portapapeles!');
-        }).catch(() => fallbackCopy(url));
-      } else {
-        fallbackCopy(url);
-      }
-    }
-
-    function fallbackCopy(text) {
-      const dummy = document.createElement("textarea");
-      document.body.appendChild(dummy);
-      dummy.value = text;
-      dummy.select();
-      document.execCommand("copy");
-      document.body.removeChild(dummy);
-      showToast('¡Enlace copiado al portapapeles!');
-    }
-
-    // Copiar todos los enlaces para compartir por WhatsApp
-    function copyAllLinksSummary() {
-      let texto = "*Panel de Supervisión Operativa de Construcción de Redes M&D*\n_Enlaces oficiales de acceso:_\n\n";
-      officialLinks.forEach(item => {
-        texto += `📌 *${item.name}*\n${item.url}\n\n`;
-      });
-
-      fallbackCopy(texto);
-      showToast('¡Listado completo copiado para WhatsApp!');
-    }
-
     // Búsqueda y filtrado interactivo
     function filterCards() {
       const query = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -963,10 +914,8 @@
     function setFilter(type, chipElement) {
       document.querySelectorAll('.filter-chip').forEach(c => {
         c.classList.remove('active');
-        c.removeAttribute('data-filter');
       });
       chipElement.classList.add('active');
-      chipElement.setAttribute('data-filter', type);
 
       const cards = document.querySelectorAll('.form-card');
       const query = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -987,16 +936,6 @@
       });
 
       document.getElementById('visibleCounter').innerText = `${visibleCount} disponibles`;
-    }
-
-    // Notificación Toast
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toastMessage').innerText = msg;
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
     }
 
     // Modo Oscuro / Claro
