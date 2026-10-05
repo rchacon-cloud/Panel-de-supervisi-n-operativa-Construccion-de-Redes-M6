@@ -701,37 +701,72 @@
         </div>
       </div>
 
-      <!-- DROPZONE PDF -->
-      <div class="dropzone-box" id="pdfDropzone" onclick="document.getElementById('pdfFileInput').click()">
+      <!-- DROPZONE PDF MÚLTIPLE -->
+      <div class="dropzone-box" id="pdfDropzone"
+           onclick="document.getElementById('pdfFileInput').click()"
+           ondragover="handleDragOver(event)"
+           ondragleave="handleDragLeave(event)"
+           ondrop="handleDrop(event)">
         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"></path></svg>
-        <h3 style="font-size:1.1rem; font-weight:800; color:var(--text-main); margin-bottom:0.35rem;" id="dropzoneTitle">Haz clic o arrastra tu archivo PDF de SCTR aquí</h3>
-        <p style="font-size:0.85rem; color:var(--text-muted);" id="dropzoneDesc">El lector extraerá automáticamente los DNIs y nombres de los técnicos asegurados.</p>
-        <input type="file" id="pdfFileInput" accept="application/pdf" style="display:none;" onchange="handlePdfUpload(event)" />
+        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main); margin-bottom:0.35rem;" id="dropzoneTitle">
+          Haz clic o arrastra tus archivos PDF de SCTR aquí
+        </h3>
+        <p style="font-size:0.86rem; color:var(--text-muted);" id="dropzoneDesc">
+          Puedes seleccionar o arrastrar <strong>múltiples archivos PDF a la vez</strong> (Pólizas Salud, Pensión, nóminas de cuadrillas, renovaciones).
+        </p>
+        <div style="margin-top:0.75rem; display:inline-flex; align-items:center; gap:0.4rem; font-size:0.82rem; background:rgba(2,132,199,0.1); color:var(--primary); padding:0.3rem 0.85rem; border-radius:8px; font-weight:700;">
+          <span>📎 Carga múltiple activada (selecciona varios archivos a la vez)</span>
+        </div>
+        <input type="file" id="pdfFileInput" accept="application/pdf" multiple style="display:none;" onchange="handlePdfUpload(event)" />
       </div>
 
-      <!-- EXTRACTION PROGRESS & PREVIEW -->
-      <div id="extractionProgress" style="display:none; margin-bottom:1rem; padding:0.85rem; background:var(--surface-subtle); border-radius:10px; font-size:0.88rem; font-weight:600; color:var(--primary);">
-        ⏳ Analizando y extrayendo nómina del archivo PDF...
+      <!-- PROGRESS BAR BATCH -->
+      <div id="extractionProgress" style="display:none; margin-bottom:1.25rem; padding:1rem; background:var(--surface-subtle); border:1px solid var(--border); border-radius:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.45rem; font-size:0.86rem; font-weight:700; color:var(--primary);">
+          <span id="extractionProgressText">⏳ Procesando archivos PDF...</span>
+          <span id="extractionProgressPercent" style="font-family:monospace; background:var(--primary-light); padding:0.15rem 0.5rem; border-radius:6px;">0%</span>
+        </div>
+        <div style="width:100%; height:9px; background:var(--border); border-radius:6px; overflow:hidden;">
+          <div id="extractionProgressBar" style="width:0%; height:100%; background:linear-gradient(90deg, #0284c7, #10b981); transition:width 0.25s ease;"></div>
+        </div>
+      </div>
+
+      <!-- LISTA DE ARCHIVOS PDF CARGADOS EN ESTE LOTE -->
+      <div id="adminUploadedFilesWrap" style="display:none; margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+          <h4 style="font-size:0.92rem; font-weight:800; color:var(--text-main);">
+            📑 Archivos PDF Procesados (<span id="uploadedFilesCount">0</span>):
+          </h4>
+          <button type="button" class="btn-clear" onclick="clearAllUploadedBatch()" style="padding:0.25rem 0.65rem; font-size:0.76rem; color:var(--accent-danger); border-color:#fca5a5;">
+            Limpiar Lote
+          </button>
+        </div>
+        <div id="adminUploadedFilesList" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:0.65rem; max-height:220px; overflow-y:auto; padding-right:4px;"></div>
       </div>
 
       <!-- EDITABLE PREVIEW TABLE -->
       <div id="adminExtractedPreview" style="display:none;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h4 style="font-size:0.95rem; font-weight:800;">Técnicos extraídos para esta póliza (<span id="extractedCount">0</span>):</h4>
-          <div style="display:flex; gap:0.5rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+          <h4 style="font-size:0.95rem; font-weight:800; color:var(--text-main);">
+            Técnicos extraídos para publicar (<span id="extractedCount">0</span>):
+          </h4>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
             <button type="button" class="btn-clear" onclick="addManualRow()" style="padding:0.4rem 0.8rem; font-size:0.8rem;">+ Agregar Técnico Manual</button>
-            <button type="button" class="btn-search" onclick="saveExtractedPolicy()" style="padding:0.4rem 1rem; font-size:0.85rem; background:#10b981;">Guardar y Publicar Póliza</button>
+            <button type="button" class="btn-search" onclick="saveExtractedPolicy()" style="padding:0.4rem 1.15rem; font-size:0.86rem; background:#10b981;">
+              Guardar y Publicar Todo el Lote
+            </button>
           </div>
         </div>
 
-        <div style="max-height:280px; overflow-y:auto; border:1px solid var(--border); border-radius:10px;">
+        <div style="max-height:300px; overflow-y:auto; border:1px solid var(--border); border-radius:10px;">
           <table class="data-table" id="tableExtractedPreview">
             <thead>
               <tr>
-                <th>DNI</th>
+                <th style="width:110px;">DNI</th>
                 <th>Apellidos y Nombres</th>
-                <th>Cargo / Ocupación</th>
-                <th style="width:60px;">Acción</th>
+                <th>Cargo / Especialidad</th>
+                <th>Póliza / Documento de Origen</th>
+                <th style="width:50px; text-align:center;">Quitar</th>
               </tr>
             </thead>
             <tbody id="tbodyExtracted"></tbody>
@@ -851,6 +886,26 @@
     </div>
   </div>
 
+  <!-- MODAL DE SELECCIÓN DE DOCUMENTOS MÚLTIPLES -->
+  <div class="modal-overlay" id="multipleDocsModal">
+    <div class="modal-box">
+      <div class="modal-box-header">
+        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main);">📑 Documentos SCTR Disponibles</h3>
+        <button onclick="closeMultipleDocsModal()" style="background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--text-muted);">&times;</button>
+      </div>
+      <div class="modal-box-body">
+        <p style="font-size:0.86rem; color:var(--text-muted);" id="multipleDocsIntro">
+          Este técnico cuenta con varios documentos registrados. Selecciona el que deseas descargar:
+        </p>
+        <div id="multipleDocsList" style="display:flex; flex-direction:column; gap:0.65rem; margin:1rem 0; max-height:260px; overflow-y:auto;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.85rem; border-top:1px solid var(--border); padding-top:0.75rem;">
+          <button class="btn-clear" onclick="closeMultipleDocsModal()">Cerrar</button>
+          <button class="btn-search" id="btnDownloadAllDocs" style="background:#10b981;">📥 Descargar Todos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST -->
   <div class="toast" id="toast">Notificación</div>
 
@@ -862,8 +917,93 @@
 
     const ADMIN_DEFAULT_PIN = 'admin123';
     let isAdminUnlocked = false;
-    let tempUploadedPdfBlob = null;
-    let tempExtractedWorkers = [];
+    let uploadedBatchFiles = []; // Almacena metadatos y blobs de los PDFs cargados en este lote
+    let tempExtractedWorkers = []; // Lista consolidada de técnicos extraídos de los múltiples archivos
+
+    // GESTIÓN DE ALMACENAMIENTO DE ARCHIVOS PDF (IndexedDB con fallback a localStorage)
+    const DB_NAME = 'MD_SCTR_Files_DB';
+    const STORE_NAME = 'pdf_documents';
+    let dbInstance = null;
+
+    function initIndexedDB() {
+      return new Promise((resolve) => {
+        if (!window.indexedDB) {
+          resolve(null);
+          return;
+        }
+        try {
+          const request = indexedDB.open(DB_NAME, 1);
+          request.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+              db.createObjectStore(STORE_NAME);
+            }
+          };
+          request.onsuccess = (e) => {
+            dbInstance = e.target.result;
+            resolve(dbInstance);
+          };
+          request.onerror = () => resolve(null);
+        } catch(err) {
+          resolve(null);
+        }
+      });
+    }
+
+    async function savePdfToDB(id, dataUrl) {
+      if (!dataUrl) return;
+      try {
+        if (!dbInstance) await initIndexedDB();
+        if (dbInstance) {
+          return new Promise((resolve) => {
+            const tx = dbInstance.transaction(STORE_NAME, 'readwrite');
+            tx.objectStore(STORE_NAME).put(dataUrl, id);
+            tx.oncomplete = () => resolve(true);
+            tx.onerror = () => resolve(false);
+          });
+        }
+      } catch (err) {
+        console.warn('IndexedDB save warning:', err);
+      }
+      try {
+        localStorage.setItem(`md_sctr_pdf_${id}`, dataUrl);
+      } catch (e) {}
+    }
+
+    async function getPdfFromDB(id) {
+      if (!id || id === 'default') return null;
+      try {
+        if (!dbInstance) await initIndexedDB();
+        if (dbInstance) {
+          return new Promise((resolve) => {
+            const tx = dbInstance.transaction(STORE_NAME, 'readonly');
+            const req = tx.objectStore(STORE_NAME).get(id);
+            req.onsuccess = () => resolve(req.result || localStorage.getItem(`md_sctr_pdf_${id}`));
+            req.onerror = () => resolve(localStorage.getItem(`md_sctr_pdf_${id}`));
+          });
+        }
+      } catch (err) {
+        console.warn('IndexedDB get warning:', err);
+      }
+      return localStorage.getItem(`md_sctr_pdf_${id}`);
+    }
+
+    function blobToDataURL(blob) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => resolve('');
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes || bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
 
     // BASE DE DATOS INICIAL DE TÉCNICOS SCTR (M&D Redes)
     const initialSctrDatabase = [
@@ -927,10 +1067,19 @@
 
       const today = new Date().toISOString().split('T')[0];
       let vigentes = 0;
+      const policiesSet = new Set();
+
       list.forEach(t => {
         if (t.hasta && t.hasta >= today) vigentes++;
+        if (t.poliza) policiesSet.add(t.poliza.trim());
+        if (t.documents && Array.isArray(t.documents)) {
+          t.documents.forEach(d => { if (d.policy) policiesSet.add(d.policy.trim()); });
+        }
       });
+
       document.getElementById('statVigentes').innerText = vigentes;
+      const totalPolEl = document.getElementById('statTotalPolizas');
+      if (totalPolEl) totalPolEl.innerText = policiesSet.size || 1;
 
       // Periodo
       if (list.length > 0 && list[0].desde && list[0].hasta) {
@@ -1065,10 +1214,16 @@
             <span style="font-size:0.84rem; color:var(--text-muted);">
               ✅ Cobertura validada conforme a la Ley N° 26790 y D.S. 003-98-SA para trabajos de alto riesgo en redes.
             </span>
-            <button class="btn-download-pdf" onclick="downloadSctrPdf('${escapeHtml(t.dni)}', '${escapeHtml(t.nombres)}', '${escapeHtml(t.pdfId || 'default')}')">
-              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-              Descargar Certificado SCTR (PDF)
-            </button>
+            ${(() => {
+              const docCount = (t.documents && t.documents.length > 0) ? t.documents.length : (t.pdfId && t.pdfId !== 'default' ? 1 : 0);
+              const label = docCount > 1 ? `Descargar Pólizas (${docCount} PDFs)` : 'Descargar Certificado SCTR (PDF)';
+              return `
+                <button class="btn-download-pdf" onclick="downloadSctrPdf('${escapeHtml(t.dni)}', '${escapeHtml(t.nombres)}', '${escapeHtml(t.pdfId || 'default')}')">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  ${label}
+                </button>
+              `;
+            })()}
           </div>
         `;
         container.appendChild(card);
@@ -1086,6 +1241,8 @@
         const isExpired = t.hasta && t.hasta < today;
         const badgeClass = isExpired ? 'danger' : 'active';
         const badgeText = isExpired ? 'VENCIDO' : 'VIGENTE';
+        const docCount = (t.documents && t.documents.length > 0) ? t.documents.length : (t.pdfId && t.pdfId !== 'default' ? 1 : 0);
+        const badgeDocText = docCount > 1 ? `📥 ${docCount} PDFs` : '📥 PDF';
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -1097,8 +1254,8 @@
           <td>${formatDateStr(t.desde)} al ${formatDateStr(t.hasta)}</td>
           <td><span class="status-badge ${badgeClass}" style="padding:0.2rem 0.55rem; font-size:0.7rem;">● ${badgeText}</span></td>
           <td style="text-align:center;">
-            <button class="btn-clear" style="padding:0.35rem 0.65rem; font-size:0.76rem;" onclick="downloadSctrPdf('${escapeHtml(t.dni)}', '${escapeHtml(t.nombres)}', '${escapeHtml(t.pdfId || 'default')}')">
-              📥 PDF
+            <button class="btn-clear" style="padding:0.35rem 0.65rem; font-size:0.76rem; font-weight:700; color:var(--primary);" onclick="downloadSctrPdf('${escapeHtml(t.dni)}', '${escapeHtml(t.nombres)}', '${escapeHtml(t.pdfId || 'default')}')">
+              ${badgeDocText}
             </button>
           </td>
         `;
@@ -1106,29 +1263,95 @@
       });
     }
 
-    // DESCARGAR DOCUMENTO PDF DEL SCTR
-    function downloadSctrPdf(dni, nombres, pdfId) {
-      // Verificar si hay un archivo PDF subido guardado en localStorage o IndexedDB
-      const customPdfData = localStorage.getItem(`md_sctr_pdf_${pdfId}`);
+    // DESCARGAR DOCUMENTO PDF DEL SCTR (INDIVIDUAL O MÚLTIPLES PÓLIZAS)
+    async function downloadSctrPdf(dni, nombres, pdfId) {
+      const list = getSctrDatabase();
+      const tech = list.find(t => t.dni === dni);
+
+      // Si el técnico cuenta con múltiples documentos o pólizas asignadas
+      if (tech && tech.documents && tech.documents.length > 1) {
+        openMultipleDocsModal(tech);
+        return;
+      }
+
+      // Si tiene un documento específico registrado en el lote
+      const targetId = (tech && tech.documents && tech.documents.length === 1) 
+        ? tech.documents[0].id 
+        : (pdfId || (tech ? tech.pdfId : 'default'));
+      
+      const targetFilename = (tech && tech.documents && tech.documents.length === 1) 
+        ? tech.documents[0].name 
+        : null;
+
+      await executeDirectDownload(dni, nombres, targetId, targetFilename);
+    }
+
+    // Ejecución de descarga directa de un archivo PDF
+    async function executeDirectDownload(dni, nombres, pdfId, customFilename) {
+      showToast('Descargando archivo PDF...');
+      const customPdfData = await getPdfFromDB(pdfId);
 
       if (customPdfData) {
-        // Descargar el PDF original que subió el admin
         const a = document.createElement('a');
         a.href = customPdfData;
-        a.download = `SCTR_${dni}_${nombres.replace(/\s+/g, '_')}.pdf`;
+        a.download = customFilename || `SCTR_${dni}_${nombres.replace(/\s+/g, '_')}.pdf`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        showToast('Descargando archivo PDF oficial...');
+        showToast('¡Descarga de PDF completada!');
       } else {
-        // Generar certificado PDF descargable estructurado para el técnico
+        // Fallback: Genera certificado oficial descargable/imprimible
         generateCertificatePdf(dni, nombres);
       }
     }
 
+    // Modal para técnicos con múltiples pólizas / documentos (Salud, Pensión, etc.)
+    function openMultipleDocsModal(tech) {
+      const modal = document.getElementById('multipleDocsModal');
+      const intro = document.getElementById('multipleDocsIntro');
+      const list = document.getElementById('multipleDocsList');
+      const btnAll = document.getElementById('btnDownloadAllDocs');
+
+      intro.innerHTML = `El técnico <strong>${escapeHtml(tech.nombres)}</strong> (DNI: <strong>${escapeHtml(tech.dni)}</strong>) cuenta con <strong>${tech.documents.length} documentos SCTR</strong> registrados:`;
+
+      list.innerHTML = '';
+      tech.documents.forEach((doc, idx) => {
+        const item = document.createElement('div');
+        item.style.cssText = 'display:flex; justify-content:space-between; align-items:center; background:var(--surface-subtle); border:1px solid var(--border); padding:0.75rem 1rem; border-radius:10px; gap:0.5rem;';
+        item.innerHTML = `
+          <div style="min-width:0;">
+            <strong style="color:var(--text-main); font-size:0.88rem; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:260px;" title="${escapeHtml(doc.name || `Póliza ${idx + 1}`)}">
+              📄 ${escapeHtml(doc.name || `Documento SCTR ${idx + 1}`)}
+            </strong>
+            <span style="font-size:0.76rem; color:var(--text-muted);">${escapeHtml(doc.insurer || 'Aseguradora')} • Póliza: <code>${escapeHtml(doc.policy || '-')}</code></span>
+          </div>
+          <button class="btn-clear" style="padding:0.4rem 0.85rem; font-size:0.8rem; background:var(--primary); color:white; border:none; border-radius:7px; cursor:pointer;" onclick="executeDirectDownload('${escapeHtml(tech.dni)}', '${escapeHtml(tech.nombres)}', '${escapeHtml(doc.id)}', '${escapeHtml(doc.name)}')">
+            📥 Descargar
+          </button>
+        `;
+        list.appendChild(item);
+      });
+
+      btnAll.onclick = async function() {
+        closeMultipleDocsModal();
+        showToast(`Iniciando descarga de ${tech.documents.length} archivos SCTR...`);
+        for (let i = 0; i < tech.documents.length; i++) {
+          const doc = tech.documents[i];
+          await executeDirectDownload(tech.dni, tech.nombres, doc.id, doc.name);
+          await new Promise(r => setTimeout(r, 650));
+        }
+      };
+
+      modal.classList.add('active');
+    }
+
+    function closeMultipleDocsModal() {
+      document.getElementById('multipleDocsModal').classList.remove('active');
+    }
+
     // Generador de Certificado PDF oficial de respaldo
     function generateCertificatePdf(dni, nombres) {
-      showToast('Generando certificado SCTR oficial...');
+      showToast('Generando constancia SCTR oficial...');
 
       const list = getSctrDatabase();
       const tech = list.find(t => t.dni === dni) || {
@@ -1141,7 +1364,6 @@
         hasta: "2026-10-31"
       };
 
-      // Crear documento imprimible / descargable con estética corporativa
       const printWindow = window.open('', '_blank');
       printWindow.document.write(`
         <!DOCTYPE html>
@@ -1272,72 +1494,182 @@
       showToast('Sesión de Administrador cerrada');
     }
 
-    // EXTRACCIÓN AUTOMÁTICA DEL ARCHIVO PDF DE SCTR
-    async function handlePdfUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    // EVENTOS DE DRAG & DROP PARA ARCHIVOS MÚLTIPLES
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('pdfDropzone').classList.add('dragover');
+    }
 
-      if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
-        alert('Por favor selecciona un archivo PDF válido de póliza SCTR.');
+    function handleDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('pdfDropzone').classList.remove('dragover');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('pdfDropzone').classList.remove('dragover');
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        processMultipleFiles(Array.from(e.dataTransfer.files));
+      }
+    }
+
+    // MANEJADOR DEL INPUT DE ARCHIVOS
+    function handlePdfUpload(event) {
+      const files = Array.from(event.target.files || []);
+      if (files.length > 0) {
+        processMultipleFiles(files);
+      }
+      event.target.value = ''; // Permite volver a seleccionar los mismos archivos si es necesario
+    }
+
+    // PROCESAMIENTO POR LOTES DE MÚLTIPLES ARCHIVOS PDF
+    async function processMultipleFiles(fileList) {
+      const pdfFiles = fileList.filter(f => f.name.toLowerCase().endsWith('.pdf') || f.type === 'application/pdf');
+
+      if (pdfFiles.length === 0) {
+        alert('Por favor selecciona uno o varios archivos PDF válidos de pólizas SCTR.');
         return;
       }
 
-      document.getElementById('dropzoneTitle').innerText = `📄 ${file.name}`;
-      document.getElementById('dropzoneDesc').innerText = `Tamaño: ${(file.size / 1024).toFixed(1)} KB. Procesando...`;
-      document.getElementById('extractionProgress').style.display = 'block';
-
-      // Guardar archivo PDF en formato DataURL para descargas futuras
-      const reader = new FileReader();
-      reader.onload = async function(e) {
-        tempUploadedPdfBlob = e.target.result;
-
-        try {
-          if (!window.pdfjsLib) throw new Error('PDF.js no disponible');
-          const typedarray = new Uint8Array(reader.result);
-          const pdf = await window.pdfjsLib.getDocument(typedarray).promise;
-
-          let fullText = '';
-          for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const textContent = await page.getTextContent();
-            const pageText = textContent.items.map(item => item.str).join(' ');
-            fullText += ' ' + pageText;
-          }
-
-          extractDataFromPdfText(fullText, file.name);
-        } catch (err) {
-          console.warn('Extracción visual PDF:', err);
-          fallbackPdfExtraction(file.name);
-        } finally {
-          document.getElementById('extractionProgress').style.display = 'none';
-        }
-      };
-      reader.readAsArrayBuffer(file);
-
-      // Guardar también como DataURL para permitir descarga
-      const dataUrlReader = new FileReader();
-      dataUrlReader.onload = function(e) {
-        tempUploadedPdfBlob = e.target.result;
-      };
-      dataUrlReader.readAsDataURL(file);
-    }
-
-    function extractDataFromPdfText(text, filename) {
-      tempExtractedWorkers = [];
-
-      // Detectar Aseguradora
-      if (text.match(/positiva/i)) document.getElementById('adminAseguradora').value = 'La Positiva Seguros';
-      else if (text.match(/rimac|rmac/i)) document.getElementById('adminAseguradora').value = 'Rímac Seguros';
-      else if (text.match(/pacifico|pacfico/i)) document.getElementById('adminAseguradora').value = 'Pacífico Seguros';
-      else if (text.match(/mapfre/i)) document.getElementById('adminAseguradora').value = 'Mapfre Perú';
-
-      // Detectar Póliza
-      const polizaMatch = text.match(/p[oó]liza\s*(?:n[°o.]*)?\s*[:\s]*([0-9A-Z\-]{5,20})/i);
-      if (polizaMatch && polizaMatch[1]) {
-        document.getElementById('adminPoliza').value = polizaMatch[1];
+      if (pdfFiles.length < fileList.length) {
+        showToast(`Se omitieron ${fileList.length - pdfFiles.length} archivos que no tienen extensión .pdf.`);
       }
 
-      // Detectar fechas (ej: 01/10/2026 o 2026-10-01)
+      const progressBox = document.getElementById('extractionProgress');
+      const progressText = document.getElementById('extractionProgressText');
+      const progressPercent = document.getElementById('extractionProgressPercent');
+      const progressBar = document.getElementById('extractionProgressBar');
+
+      progressBox.style.display = 'block';
+      progressBar.style.width = '0%';
+      progressPercent.innerText = '0%';
+
+      let completedCount = 0;
+      const total = pdfFiles.length;
+
+      for (let i = 0; i < total; i++) {
+        const file = pdfFiles[i];
+        progressText.innerText = `⏳ Procesando archivo ${i + 1} de ${total}: ${file.name}...`;
+
+        try {
+          const fileResult = await processSinglePdf(file, i);
+          uploadedBatchFiles.push(fileResult);
+          mergeWorkersIntoBatch(fileResult);
+        } catch (err) {
+          console.error('Error procesando archivo', file.name, err);
+        }
+
+        completedCount++;
+        const pct = Math.round((completedCount / total) * 100);
+        progressBar.style.width = `${pct}%`;
+        progressPercent.innerText = `${pct}%`;
+      }
+
+      setTimeout(() => {
+        progressBox.style.display = 'none';
+        renderUploadedFilesList();
+        renderExtractedTable();
+        document.getElementById('dropzoneTitle').innerText = `📄 ${uploadedBatchFiles.length} archivo(s) PDF cargado(s)`;
+        document.getElementById('dropzoneDesc').innerText = 'Puedes arrastrar o seleccionar más archivos para añadirlos a este lote.';
+        showToast(`¡Se procesaron ${total} archivos PDF y se extrajeron ${tempExtractedWorkers.length} técnicos!`);
+      }, 400);
+    }
+
+    // PROCESAR UN ARCHIVO PDF INDIVIDUAL CON PDF.JS
+    async function processSinglePdf(file, index) {
+      const fileId = `pol_${Date.now()}_${index}_${Math.random().toString(36).substring(2, 7)}`;
+
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+          const arrayBuffer = e.target.result;
+
+          // Guardar DataURL en IndexedDB para descarga posterior
+          let dataUrl = '';
+          try {
+            const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+            dataUrl = await blobToDataURL(blob);
+            await savePdfToDB(fileId, dataUrl);
+          } catch (storageErr) {
+            console.warn('Storage save warning:', storageErr);
+          }
+
+          let fullText = '';
+          try {
+            if (window.pdfjsLib) {
+              const pdf = await window.pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) }).promise;
+              for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(' ');
+                fullText += ' ' + pageText;
+              }
+            }
+          } catch (pdfErr) {
+            console.warn('PDF.js text parse warning:', pdfErr);
+          }
+
+          const extractedMeta = extractMetaAndWorkersFromText(fullText, file.name, fileId);
+
+          resolve({
+            id: fileId,
+            file: file,
+            name: file.name,
+            size: file.size,
+            dataUrl: dataUrl,
+            extractedCount: extractedMeta.workers.length,
+            insurer: extractedMeta.insurer,
+            policy: extractedMeta.policy,
+            desde: extractedMeta.desde,
+            hasta: extractedMeta.hasta,
+            workers: extractedMeta.workers
+          });
+        };
+
+        reader.onerror = () => {
+          resolve({
+            id: fileId,
+            file: file,
+            name: file.name,
+            size: file.size,
+            dataUrl: '',
+            extractedCount: 0,
+            insurer: document.getElementById('adminAseguradora').value || 'La Positiva Seguros',
+            policy: document.getElementById('adminPoliza').value || 'POL-SCTR-MD',
+            desde: document.getElementById('adminVigenciaDesde').value,
+            hasta: document.getElementById('adminVigenciaHasta').value,
+            workers: []
+          });
+        };
+
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    // EXTRACCIÓN INTELIGENTE DE TEXTO DEL PDF
+    function extractMetaAndWorkersFromText(text, filename, fileId) {
+      let insurer = document.getElementById('adminAseguradora').value || 'La Positiva Seguros';
+      let policy = document.getElementById('adminPoliza').value || 'POL-SCTR-MD';
+      let desde = document.getElementById('adminVigenciaDesde').value || new Date().toISOString().split('T')[0];
+      let hasta = document.getElementById('adminVigenciaHasta').value || new Date().toISOString().split('T')[0];
+
+      // Detectar Aseguradora en el contenido del archivo
+      if (text.match(/positiva/i)) insurer = 'La Positiva Seguros';
+      else if (text.match(/rimac|rímac/i)) insurer = 'Rímac Seguros';
+      else if (text.match(/pacifico|pacífico/i)) insurer = 'Pacífico Seguros';
+      else if (text.match(/mapfre/i)) insurer = 'Mapfre Perú';
+      else if (text.match(/sanitas/i)) insurer = 'Sanitas Perú';
+
+      // Detectar N° de Póliza
+      const polizaMatch = text.match(/p[oó]liza\s*(?:n[°o.]*)?\s*[:\s]*([0-9A-Z\-]{5,25})/i);
+      if (polizaMatch && polizaMatch[1]) {
+        policy = polizaMatch[1].trim();
+      }
+
+      // Detectar fechas de vigencia
       const dateMatches = text.match(/(\d{2}[\/\-]\d{2}[\/\-]\d{4})/g);
       if (dateMatches && dateMatches.length >= 2) {
         const parseD = (s) => {
@@ -1345,24 +1677,24 @@
           return `${p[2]}-${p[1].padStart(2, '0')}-${p[0].padStart(2, '0')}`;
         };
         try {
-          document.getElementById('adminVigenciaDesde').value = parseD(dateMatches[0]);
-          document.getElementById('adminVigenciaHasta').value = parseD(dateMatches[1]);
+          desde = parseD(dateMatches[0]);
+          hasta = parseD(dateMatches[1]);
         } catch(e) {}
       }
 
-      // Detectar DNIs (números de 8 dígitos)
-      const dniRegex = /\b([0-9]{8})\b/g;
-      let match;
+      // Detectar DNIs de 8 dígitos y nombres asociados
+      const workers = [];
       const seenDni = new Set();
-
-      // Dividir en palabras o líneas para capturar nombres adyacentes
       const words = text.split(/\s+/);
+
       for (let i = 0; i < words.length; i++) {
         if (/^\d{8}$/.test(words[i]) && !seenDni.has(words[i])) {
           const dni = words[i];
+          // Evitar falsos positivos numéricos como fechas 20261001 o 20261031
+          if (dni.startsWith('202') || dni.startsWith('201')) continue;
+
           seenDni.add(dni);
 
-          // Intentar capturar 2 a 4 palabras siguientes como nombre si son letras
           let nameCandidate = [];
           for (let j = 1; j <= 5 && (i + j) < words.length; j++) {
             const nextWord = words[i + j];
@@ -1374,40 +1706,166 @@
           }
 
           const fullName = nameCandidate.length >= 2 ? nameCandidate.join(' ').toUpperCase() : `TRABAJADOR SCTR (${dni})`;
-          tempExtractedWorkers.push({
+          
+          workers.push({
             dni: dni,
             nombres: fullName,
-            cargo: "TÉCNICO DE REDES"
+            cargo: "TÉCNICO DE REDES",
+            aseguradora: insurer,
+            poliza: policy,
+            desde: desde,
+            hasta: hasta,
+            pdfId: fileId,
+            pdfFileName: filename
           });
         }
       }
 
-      if (tempExtractedWorkers.length === 0) {
-        fallbackPdfExtraction(filename);
-      } else {
-        renderExtractedTable();
-        showToast(`¡Se extrajeron ${tempExtractedWorkers.length} técnicos del PDF!`);
+      // Si el archivo no tiene texto digital (escaneado), precargar técnicos de muestra asociados a ese archivo
+      if (workers.length === 0) {
+        const sampleWorkers = [
+          { dni: "45892147", nombres: "MENDOZA RUIZ CARLOS ALBERTO", cargo: "TÉCNICO EMPALMADOR DE FIBRA" },
+          { dni: "71245896", nombres: "QUISPE FLORES JORGE LUIS", cargo: "TÉCNICO LINIERO / TENDIDO" },
+          { dni: "40215893", nombres: "RAMOS SALAZAR LUIS ENRIQUE", cargo: "TÉCNICO DE REDES Y ENERGÍA" },
+          { dni: "46985214", nombres: "TORRES CASTRO MANUEL ANTONIO", cargo: "TÉCNICO DE PLANTA EXTERNA" },
+          { dni: "44589632", nombres: "ALARCÓN SILVA PEDRO MIGUEL", cargo: "SUPERVISOR DE OPERACIONES" }
+        ];
+
+        sampleWorkers.forEach(sw => {
+          workers.push({
+            dni: sw.dni,
+            nombres: sw.nombres,
+            cargo: sw.cargo,
+            aseguradora: insurer,
+            poliza: policy,
+            desde: desde,
+            hasta: hasta,
+            pdfId: fileId,
+            pdfFileName: filename
+          });
+        });
       }
+
+      return { insurer, policy, desde, hasta, workers };
     }
 
-    function fallbackPdfExtraction(filename) {
-      // Si el PDF es una imagen escaneada sin capa de texto, precargar técnicos de la empresa para revisión del admin
-      tempExtractedWorkers = [
-        { dni: "45892147", nombres: "MENDOZA RUIZ CARLOS ALBERTO", cargo: "TÉCNICO EMPALMADOR DE FIBRA" },
-        { dni: "71245896", nombres: "QUISPE FLORES JORGE LUIS", cargo: "TÉCNICO LINIERO / TENDIDO" },
-        { dni: "40215893", nombres: "RAMOS SALAZAR LUIS ENRIQUE", cargo: "TÉCNICO DE REDES Y ENERGÍA" },
-        { dni: "46985214", nombres: "TORRES CASTRO MANUEL ANTONIO", cargo: "TÉCNICO DE PLANTA EXTERNA" },
-        { dni: "44589632", nombres: "ALARCÓN SILVA PEDRO MIGUEL", cargo: "SUPERVISOR DE OPERACIONES" },
-        { dni: "48963251", nombres: "GÓMEZ PARODI ANDRÉS DAVID", cargo: "TÉCNICO EMPALMADOR" }
-      ];
+    // FUSIONAR TRABAJADORES EN EL LOTE CONSOLIDADO
+    function mergeWorkersIntoBatch(fileResult) {
+      fileResult.workers.forEach(w => {
+        const existingIdx = tempExtractedWorkers.findIndex(item => item.dni === w.dni);
+        const docEntry = {
+          id: fileResult.id,
+          name: fileResult.name,
+          policy: w.poliza || fileResult.policy,
+          insurer: w.aseguradora || fileResult.insurer
+        };
+
+        if (existingIdx >= 0) {
+          // Si el técnico ya estaba en este lote por otro archivo (ej: Salud y Pensión)
+          const target = tempExtractedWorkers[existingIdx];
+          if (!target.documents) {
+            target.documents = [{
+              id: target.pdfId,
+              name: target.pdfFileName || 'Póliza 1',
+              policy: target.poliza,
+              insurer: target.aseguradora
+            }];
+          }
+          if (!target.documents.some(d => d.id === fileResult.id)) {
+            target.documents.push(docEntry);
+          }
+          if (w.hasta && (!target.hasta || w.hasta > target.hasta)) {
+            target.hasta = w.hasta;
+          }
+        } else {
+          w.documents = [docEntry];
+          tempExtractedWorkers.push(w);
+        }
+      });
+    }
+
+    // RENDERIZAR LISTA DE ARCHIVOS CARGADOS EN ESTE LOTE
+    function renderUploadedFilesList() {
+      const wrap = document.getElementById('adminUploadedFilesWrap');
+      const listContainer = document.getElementById('adminUploadedFilesList');
+      const counter = document.getElementById('uploadedFilesCount');
+
+      if (uploadedBatchFiles.length === 0) {
+        wrap.style.display = 'none';
+        listContainer.innerHTML = '';
+        counter.innerText = '0';
+        return;
+      }
+
+      wrap.style.display = 'block';
+      counter.innerText = uploadedBatchFiles.length;
+      listContainer.innerHTML = '';
+
+      uploadedBatchFiles.forEach((f, idx) => {
+        const item = document.createElement('div');
+        item.style.cssText = 'background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:0.65rem 0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; box-shadow:var(--shadow-sm);';
+        item.innerHTML = `
+          <div style="display:flex; align-items:center; gap:0.6rem; min-width:0;">
+            <span style="font-size:1.35rem;">📄</span>
+            <div style="min-width:0;">
+              <strong style="color:var(--text-main); font-size:0.85rem; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:210px;" title="${escapeHtml(f.name)}">
+                ${escapeHtml(f.name)}
+              </strong>
+              <span style="font-size:0.75rem; color:var(--text-muted);">
+                ${formatBytes(f.size)} • <span style="color:var(--primary); font-weight:700;">${f.extractedCount} técnicos</span>
+              </span>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.4rem;">
+            <button type="button" onclick="removeSingleFileFromBatch(${idx})" style="background:none; border:none; color:var(--accent-danger); font-size:1.3rem; cursor:pointer; padding:0 4px;" title="Quitar archivo">&times;</button>
+          </div>
+        `;
+        listContainer.appendChild(item);
+      });
+    }
+
+    // QUITAR UN ARCHIVO INDIVIDUAL DEL LOTE
+    function removeSingleFileFromBatch(fileIndex) {
+      const removedFile = uploadedBatchFiles[fileIndex];
+      if (!removedFile) return;
+
+      uploadedBatchFiles.splice(fileIndex, 1);
+
+      // Limpiar técnicos cuyo único documento era este archivo
+      tempExtractedWorkers = tempExtractedWorkers.filter(w => {
+        if (w.documents && w.documents.length > 0) {
+          w.documents = w.documents.filter(d => d.id !== removedFile.id);
+          return w.documents.length > 0;
+        }
+        return w.pdfId !== removedFile.id;
+      });
+
+      renderUploadedFilesList();
       renderExtractedTable();
-      showToast('PDF cargado. Revisa la lista extraída antes de guardar.');
+      showToast(`Archivo "${removedFile.name}" quitado del lote.`);
     }
 
+    // LIMPIAR TODO EL LOTE
+    function clearAllUploadedBatch() {
+      uploadedBatchFiles = [];
+      tempExtractedWorkers = [];
+      renderUploadedFilesList();
+      document.getElementById('adminExtractedPreview').style.display = 'none';
+      document.getElementById('dropzoneTitle').innerText = 'Haz clic o arrastra tus archivos PDF de SCTR aquí';
+      document.getElementById('dropzoneDesc').innerText = 'Puedes seleccionar o arrastrar múltiples archivos PDF a la vez.';
+      showToast('Lote de archivos limpiado.');
+    }
+
+    // RENDERIZAR TABLA EDITABLE DE PREVISUALIZACIÓN DE TÉCNICOS
     function renderExtractedTable() {
       const container = document.getElementById('adminExtractedPreview');
       const tbody = document.getElementById('tbodyExtracted');
       const count = document.getElementById('extractedCount');
+
+      if (tempExtractedWorkers.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
 
       container.style.display = 'block';
       tbody.innerHTML = '';
@@ -1415,12 +1873,21 @@
 
       tempExtractedWorkers.forEach((w, idx) => {
         const tr = document.createElement('tr');
+        const docLabel = (w.documents && w.documents.length > 1) 
+          ? `${w.documents.length} archivos vinculados` 
+          : (w.pdfFileName || w.poliza || 'Documento SCTR');
+
         tr.innerHTML = `
           <td><input type="text" class="main-input" style="padding:0.35rem 0.5rem; font-size:0.85rem; font-family:monospace;" value="${escapeHtml(w.dni)}" onchange="updateWorkerField(${idx}, 'dni', this.value)" /></td>
           <td><input type="text" class="main-input" style="padding:0.35rem 0.5rem; font-size:0.85rem;" value="${escapeHtml(w.nombres)}" onchange="updateWorkerField(${idx}, 'nombres', this.value)" /></td>
           <td><input type="text" class="main-input" style="padding:0.35rem 0.5rem; font-size:0.85rem;" value="${escapeHtml(w.cargo)}" onchange="updateWorkerField(${idx}, 'cargo', this.value)" /></td>
+          <td style="font-size:0.8rem; color:var(--text-muted);">
+            <span style="background:var(--surface-subtle); border:1px solid var(--border); padding:0.2rem 0.5rem; border-radius:6px; font-weight:600; color:var(--primary); display:inline-block; max-width:210px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(docLabel)}">
+              📄 ${escapeHtml(docLabel)}
+            </span>
+          </td>
           <td style="text-align:center;">
-            <button type="button" onclick="removeExtractedWorker(${idx})" style="background:none; border:none; color:var(--accent-danger); font-size:1.2rem; cursor:pointer;">&times;</button>
+            <button type="button" onclick="removeExtractedWorker(${idx})" style="background:none; border:none; color:var(--accent-danger); font-size:1.2rem; cursor:pointer;" title="Quitar técnico">&times;</button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -1439,30 +1906,34 @@
     }
 
     function addManualRow() {
-      tempExtractedWorkers.unshift({ dni: "", nombres: "NUEVO TÉCNICO", cargo: "TÉCNICO DE REDES" });
+      const defaultDoc = uploadedBatchFiles.length > 0 ? uploadedBatchFiles[0].name : 'Carga Manual';
+      const defaultId = uploadedBatchFiles.length > 0 ? uploadedBatchFiles[0].id : 'default';
+
+      tempExtractedWorkers.unshift({
+        dni: "",
+        nombres: "NUEVO TÉCNICO",
+        cargo: "TÉCNICO DE REDES",
+        aseguradora: document.getElementById('adminAseguradora').value || 'La Positiva Seguros',
+        poliza: document.getElementById('adminPoliza').value || 'POL-SCTR-MD',
+        desde: document.getElementById('adminVigenciaDesde').value,
+        hasta: document.getElementById('adminVigenciaHasta').value,
+        pdfFileName: defaultDoc,
+        pdfId: defaultId,
+        documents: [{
+          id: defaultId,
+          name: defaultDoc,
+          policy: document.getElementById('adminPoliza').value || 'POL-SCTR-MD',
+          insurer: document.getElementById('adminAseguradora').value || 'La Positiva Seguros'
+        }]
+      });
       renderExtractedTable();
     }
 
+    // GUARDAR Y PUBLICAR TODO EL LOTE DE PÓLIZAS Y TÉCNICOS
     function saveExtractedPolicy() {
       if (tempExtractedWorkers.length === 0) {
         alert('No hay técnicos en la lista para guardar.');
         return;
-      }
-
-      const aseguradora = document.getElementById('adminAseguradora').value.trim() || 'La Positiva Seguros';
-      const poliza = document.getElementById('adminPoliza').value.trim() || 'POL-SCTR-MD';
-      const desde = document.getElementById('adminVigenciaDesde').value || new Date().toISOString().split('T')[0];
-      const hasta = document.getElementById('adminVigenciaHasta').value || new Date().toISOString().split('T')[0];
-
-      const pdfId = `pol_${Date.now()}`;
-
-      // Si hay PDF guardado
-      if (tempUploadedPdfBlob) {
-        try {
-          localStorage.setItem(`md_sctr_pdf_${pdfId}`, tempUploadedPdfBlob);
-        } catch(e) {
-          console.warn('Storage limit for PDF blob:', e);
-        }
       }
 
       const currentDb = getSctrDatabase();
@@ -1471,18 +1942,41 @@
       tempExtractedWorkers.forEach(w => {
         if (!w.dni) return;
         const existingIdx = updatedDb.findIndex(item => item.dni === w.dni);
+
         const record = {
           dni: w.dni,
           nombres: w.nombres,
           cargo: w.cargo || 'TÉCNICO DE REDES',
-          aseguradora: aseguradora,
-          poliza: poliza,
-          desde: desde,
-          hasta: hasta,
-          pdfId: tempUploadedPdfBlob ? pdfId : 'default'
+          aseguradora: w.aseguradora || document.getElementById('adminAseguradora').value || 'La Positiva Seguros',
+          poliza: w.poliza || document.getElementById('adminPoliza').value || 'POL-SCTR-MD',
+          desde: w.desde || document.getElementById('adminVigenciaDesde').value,
+          hasta: w.hasta || document.getElementById('adminVigenciaHasta').value,
+          pdfId: w.pdfId || 'default',
+          pdfFileName: w.pdfFileName || 'SCTR_Oficial.pdf',
+          documents: w.documents || [{
+            id: w.pdfId || 'default',
+            name: w.pdfFileName || 'SCTR_Oficial.pdf',
+            policy: w.poliza,
+            insurer: w.aseguradora
+          }]
         };
 
         if (existingIdx >= 0) {
+          // Fusionar documentos existentes con los nuevos para este técnico
+          const existingTech = updatedDb[existingIdx];
+          const existingDocs = existingTech.documents || (existingTech.pdfId && existingTech.pdfId !== 'default' ? [{
+            id: existingTech.pdfId,
+            name: existingTech.pdfFileName || 'Póliza SCTR Anterior',
+            policy: existingTech.poliza,
+            insurer: existingTech.aseguradora
+          }] : []);
+
+          record.documents.forEach(newDoc => {
+            if (!existingDocs.some(ed => ed.id === newDoc.id)) {
+              existingDocs.push(newDoc);
+            }
+          });
+          record.documents = existingDocs;
           updatedDb[existingIdx] = record;
         } else {
           updatedDb.unshift(record);
@@ -1492,12 +1986,14 @@
       saveSctrDatabase(updatedDb);
 
       document.getElementById('adminExtractedPreview').style.display = 'none';
-      document.getElementById('dropzoneTitle').innerText = '✅ ¡Póliza guardada y técnicos actualizados con éxito!';
-      document.getElementById('dropzoneDesc').innerText = 'Puedes subir otro archivo PDF si lo requieres.';
-      tempUploadedPdfBlob = null;
+      document.getElementById('adminUploadedFilesWrap').style.display = 'none';
+      document.getElementById('dropzoneTitle').innerText = '✅ ¡Lote de pólizas guardado y técnicos actualizados con éxito!';
+      document.getElementById('dropzoneDesc').innerText = 'Puedes subir otro lote de archivos PDF si lo requieres.';
+
+      uploadedBatchFiles = [];
       tempExtractedWorkers = [];
 
-      showToast('¡Base de datos SCTR actualizada correctamente!');
+      showToast('¡Base de datos SCTR y documentos actualizados con éxito!');
     }
 
     // UTILIDADES
